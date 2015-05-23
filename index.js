@@ -70,16 +70,16 @@ slack.on('message', function(message) {
     if (found) {
       console.log('Detected ' + found.join(',') + ' from ' + userName);
       for (var x in found) {
-        // jira.findIssue(issueNumber, function(error, issue) {
-        //   if (!error) {
-        //     console.log('Status: ' + issue.fields.status.name);
-        //     response = text.split('').reverse().join('');
-        //     channel.send(response);
-        //     console.log("@" + slack.self.name + " responded with \"" + response + "\"");
-        //   } else {
-        //     console.log("Got an error trying to find ")
-        //   }
-        // });
+        jira.findIssue(found[x], function(error, issue) {
+          if (!error) {
+            response = buildResponse(issue);
+            channel.send(response);
+            console.log("@" + slack.self.name + " responded with \"" + response + "\"");
+          } else {
+            console.log("Got an error trying to find " + found[x] + ':');
+            console.log(error);
+          }
+        });
       }
     } else {
       // Do nothing
@@ -100,3 +100,20 @@ slack.on('error', function(error) {
 });
 
 slack.login();
+
+function buildResponse(issue) {
+  var response = '';
+  response += 'Here is some information on ' + issue.key + ':\n';
+  response += '*Link*: ' + buildJIRAURI(issue.key) + '\n';
+  response += '*Summary:* ' + issue.fields.summary + '\n';
+  response += '*Status:* ' + issue.fields.status.name + '\n';
+  response += '*Assignee:* ' + issue.fields.assignee.displayName + '\n';
+  response += '*Description:*\n' + issue.fields.description;
+
+  return response;
+}
+
+function buildJIRAURI(issueKey) {
+  var base = '/' + (config.jira.base || '') + '/browse/';
+  return config.jira.protocol + '://' + config.jira.host + ':' + config.jira.port + base + issueKey;
+}

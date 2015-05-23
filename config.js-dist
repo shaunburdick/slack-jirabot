@@ -1,0 +1,18 @@
+module.exports = {
+  jira: {
+    protocol: 'https', // https or http
+    host: 'jira.yourhost.domain', // Hostname for JIRA
+    port: 443, // Usually 80 or 443
+    user: 'username', // Username of user
+    pass: 'password', // Password of user
+    apiVersion: 'latest', // API Version slug
+    verbose: false, // Verbose logging
+    strictSSL: false, // Set false for self-sign certificates
+    regex: /([A-Z0-9]+\-[0-9]+)/g // The regex to match JIRA Tickets
+  },
+  slack: {
+    token: 'xoxb-Your-Token', // Your Slack Token
+    autoReconnect: true, // Reconnect on disconnect
+    autoMark: true // Mark messages as read
+  }
+};

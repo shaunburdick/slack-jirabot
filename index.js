@@ -5,7 +5,7 @@ var JiraApi = require('jira').JiraApi,
 var slack = new Slack(
   config.slack.token,
   config.slack.autoReconnect,
-  config.slack.autoReconnect
+  config.slack.autoMark
 );
 
 var jira = new JiraApi(
@@ -16,7 +16,9 @@ var jira = new JiraApi(
   config.jira.pass,
   config.jira.apiVersion,
   config.jira.verbose,
-  config.jira.strictSSL
+  config.jira.strictSSL,
+  null, // No OAuth yet
+  config.jira.base
 );
 
 slack.on('open', function() {
@@ -104,10 +106,11 @@ slack.login();
 function buildResponse(issue) {
   var response = '';
   response += 'Here is some information on ' + issue.key + ':\n';
-  response += '*Link*: ' + buildJIRAURI(issue.key) + '\n';
-  response += '*Summary:* ' + issue.fields.summary + '\n';
-  response += '*Status:* ' + issue.fields.status.name + '\n';
-  response += '*Assignee:* ' + issue.fields.assignee.displayName + '\n';
+  response += '>*Link*: ' + buildJIRAURI(issue.key) + '\n';
+  response += '>*Summary:* ' + issue.fields.summary + '\n';
+  response += '>*Status:* ' + issue.fields.status.name + '\n';
+  response += '>*Sprint:* ' + (parseSprint(issue.fields.customfield_10005) || 'Not Assigned') + '\n';
+  response += '>*Assignee:* ' + (JIRA2Slack(issue.fields.assignee.name) || issue.fields.assignee.name) + '\n';
   response += '*Description:*\n' + issue.fields.description;
 
   return response;
@@ -116,4 +119,27 @@ function buildResponse(issue) {
 function buildJIRAURI(issueKey) {
   var base = '/' + (config.jira.base || '') + '/browse/';
   return config.jira.protocol + '://' + config.jira.host + ':' + config.jira.port + base + issueKey;
+}
+
+function parseSprint(customField) {
+  retVal = false;
+
+  if (customField && customField[0]) {
+    var matches = customField[0].match(/\,name=([^,]+)\,/);
+    if (matches && matches[1]) {
+      retVal = matches[1];
+    }
+  }
+
+  return retVal;
+}
+
+function JIRA2Slack(username) {
+  var retVal = false;
+
+  if (config.usermap[username]) {
+    retVal = '@' + config.usermap[username];
+  }
+
+  return retVal;
 }

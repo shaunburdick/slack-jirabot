@@ -15,5 +15,9 @@ module.exports = {
     token: 'xoxb-Your-Token', // Your Slack Token
     autoReconnect: true, // Reconnect on disconnect
     autoMark: true // Mark messages as read
+  },
+  usermap: {
+    // Map a JIRA username to a Slack username
+    // "jira-username": "slack-username"
   }
 };

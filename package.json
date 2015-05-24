@@ -4,12 +4,17 @@
   "description": "Slackbot for interacting with JIRA",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "author": "Shaun Burdick <github@shaunburdick.com>",
+  "homepage": "http://github.com/shaunburdick/slack-jirabot",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/shaunburdick/slack-jirabot.git"
+  },
   "license": "ISC",
   "dependencies": {
-    "jira": "^0.9.2",
+    "jira": "git://github.com/shaunburdick/node-jira",
     "slack-client": "^1.4.0"
   }
 }

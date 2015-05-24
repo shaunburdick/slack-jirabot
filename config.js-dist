@@ -3,7 +3,7 @@ module.exports = {
     protocol: 'https', // https or http
     host: 'jira.yourhost.domain', // Hostname for JIRA
     port: 443, // Usually 80 or 443
-    base: 'jira', // If JIRA doesn't site at the root, out it's base directory here
+    base: '', // If JIRA doesn't site at the root, out it's base directory here
     user: 'username', // Username of user
     pass: 'password', // Password of user
     apiVersion: 'latest', // API Version slug

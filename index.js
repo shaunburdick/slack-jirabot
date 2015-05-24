@@ -9,6 +9,7 @@ var JiraApi = require('jira').JiraApi,
 config.jira.protocol = process.env.JIRA_PROTOCOL || config.jira.protocol;
 config.jira.host = process.env.JIRA_HOST || config.jira.host;
 config.jira.port = process.env.JIRA_PORT || config.jira.port;
+config.jira.base = process.env.JIRA_BASE || config.jira.base;
 config.jira.user = process.env.JIRA_USER || config.jira.user;
 config.jira.pass = process.env.JIRA_PASS || config.jira.pass;
 config.jira.apiVersion = process.env.JIRA_API_VERSION || config.jira.apiVersion;

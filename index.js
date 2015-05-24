@@ -110,7 +110,7 @@ function buildResponse(issue) {
   response += '>*Summary:* ' + issue.fields.summary + '\n';
   response += '>*Status:* ' + issue.fields.status.name + '\n';
   response += '>*Sprint:* ' + (parseSprint(issue.fields.customfield_10005) || 'Not Assigned') + '\n';
-  response += '>*Assignee:* ' + (JIRA2Slack(issue.fields.assignee.name) || issue.fields.assignee.name) + '\n';
+  response += '>*Assignee:* ' + (JIRA2Slack(issue.fields.assignee.name) || issue.fields.assignee.displayName) + '\n';
   response += '*Description:*\n' + issue.fields.description;
 
   return response;

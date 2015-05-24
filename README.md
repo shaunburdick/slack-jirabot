@@ -5,10 +5,10 @@ This slack bot will listen on any channel it's on for JIRA tickets.
 It will lookup the ticket and respond with some information about it.
 
 ## Install
-1. Clone this repository
+1. Clone this [repository](https://github.com/shaunburdick/slack-jirabot.git)
 2. `npm install`
 3. Copy `config.js-dist` to `config.js` and fill it out
-4. `node .`
+4. `npm start`
 
 ## Docker
 
@@ -27,7 +27,6 @@ You can set the configuration of the bot by using environment variables.
 - *JIRA_VERBOSE*=false
 - *JIRA_STRICT_SSL*=false
 - *JIRA_REGEX*=([A-Z0-9]+\-[0-9]+)
-
 - *SLACK_TOKEN*=xoxb-foo
 - *SLACK_AUTO_RECONNECT*=true
 - *SLACK_AUTO_MARK*=true

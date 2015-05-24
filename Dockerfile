@@ -3,7 +3,6 @@ FROM node:onbuild
 MAINTAINER Shaun Burdick <docker@shaunburdick.com>
 
 ADD . /usr/src/myapp
-WORKDIR /usr/src/myapp
 
 ENV JIRA_PROTOCOL=https \
     JIRA_HOST=jira.yourdomain.com \

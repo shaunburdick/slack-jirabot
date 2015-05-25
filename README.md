@@ -31,7 +31,7 @@ You can set the configuration of the bot by using environment variables.
 - *JIRA_SPRINT_FIELD*=, if using greenhopper, set the custom field that holds sprint information (customfield_1xxxx)
 - *SLACK_TOKEN*=xoxb-foo, Your Slack Token
 - *SLACK_AUTO_RECONNECT*=true, Reconnect on disconnect
-- *SLACK_AUTO_MARK*=true, Mart messages as read
+- *SLACK_AUTO_MARK*=true, Mark messages as read
 
 Set them using the `-e` flag while running docker:
 

@@ -14,6 +14,7 @@ ENV JIRA_PROTOCOL=https \
     JIRA_VERBOSE=false \
     JIRA_STRICT_SSL=false \
     JIRA_REGEX=([A-Z0-9]+\-[0-9]+) \
+    JIRA_SPRINT_FIELD= \
     SLACK_TOKEN=xoxb-foo \
     SLACK_AUTO_RECONNECT=true \
     SLACK_AUTO_MARK=true

@@ -16,6 +16,7 @@ config.jira.apiVersion = process.env.JIRA_API_VERSION || config.jira.apiVersion;
 config.jira.verbose = process.env.JIRA_VERBOSE || config.jira.verbose;
 config.jira.strictSSL = process.env.JIRA_STRICT_SSL || config.jira.strictSSL;
 config.jira.regex = process.env.JIRA_REGEX ? new RegExp(process.env.JIRA_REGEX, 'g') : config.jira.regex;
+config.jira.sprintField = process.env.JIRA_SPRINT_FIELD || config.jira.sprintField;
 
 config.slack.token = process.env.SLACK_TOKEN || config.slack.token;
 config.slack.autoReconnect = process.env.SLACK_AUTO_RECONNECT || config.slack.autoReconnect;
@@ -134,7 +135,9 @@ function buildResponse(issue) {
   response += '>*Link*: ' + buildJIRAURI(issue.key) + '\n';
   response += '>*Summary:* ' + issue.fields.summary + '\n';
   response += '>*Status:* ' + issue.fields.status.name + '\n';
-  response += '>*Sprint:* ' + (parseSprint(issue.fields.customfield_10005) || 'Not Assigned') + '\n';
+  if (config.jira.sprintField) {
+    response += '>*Sprint:* ' + (parseSprint(issue.fields[config.jira.sprintField]) || 'Not Assigned') + '\n';
+  }
   response += '>*Assignee:* ' + (JIRA2Slack(issue.fields.assignee.name) || issue.fields.assignee.displayName) + '\n';
   response += '*Description:*\n' + issue.fields.description;
 
@@ -142,7 +145,11 @@ function buildResponse(issue) {
 }
 
 function buildJIRAURI(issueKey) {
-  var base = '/' + (config.jira.base || '') + '/browse/';
+  var base = '/browse/';
+  if (config.jira.base) {
+    // Strip preceeding and trailing forward slash
+    base = '/' + config.jira.base.replace(/^\/|\/$/g, '') + base;
+  }
   return config.jira.protocol + '://' + config.jira.host + ':' + config.jira.port + base + issueKey;
 }
 

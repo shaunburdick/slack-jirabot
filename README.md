@@ -18,18 +18,20 @@ Build an image using `docker build -t your_image:tag`
 You can set the configuration of the bot by using environment variables.
 *ENVIRONMENT_VARIABLE*=Default Value
 
-- *JIRA_PROTOCOL*=https
-- *JIRA_HOST*=jira.yourdomain.com
-- *JIRA_PORT*=443
-- *JIRA_USER*=username
-- *JIRA_PASS*=password
-- *JIRA_API_VERSION*=latest
-- *JIRA_VERBOSE*=false
-- *JIRA_STRICT_SSL*=false
-- *JIRA_REGEX*=([A-Z0-9]+\-[0-9]+)
-- *SLACK_TOKEN*=xoxb-foo
-- *SLACK_AUTO_RECONNECT*=true
-- *SLACK_AUTO_MARK*=true
+- *JIRA_PROTOCOL*=https, https or http
+- *JIRA_HOST*=jira.yourdomain.com, hostname for JIRA
+- *JIRA_PORT*=443, Usually 80 or 443
+- *JIRA_BASE*= , If JIRA doesn't sit at the root, put its base directory here
+- *JIRA_USER*=username, Username of JIRA user
+- *JIRA_PASS*=password, Password of JIRA user
+- *JIRA_API_VERSION*=latest, API version slug
+- *JIRA_VERBOSE*=false, Verbose logging
+- *JIRA_STRICT_SSL*=false, Set to false for self-signed certificates
+- *JIRA_REGEX*=([A-Z0-9]+\-[0-9]+), The regex to match JIRA tickets
+- *JIRA_SPRINT_FIELD*=, if using greenhopper, set the custom field that holds sprint information (customfield_1xxxx)
+- *SLACK_TOKEN*=xoxb-foo, Your Slack Token
+- *SLACK_AUTO_RECONNECT*=true, Reconnect on disconnect
+- *SLACK_AUTO_MARK*=true, Mart messages as read
 
 Set them using the `-e` flag while running docker:
 

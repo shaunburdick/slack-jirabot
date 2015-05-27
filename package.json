@@ -1,6 +1,6 @@
 {
   "name": "slack-jirabot",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Slackbot for interacting with JIRA",
   "main": "index.js",
   "private": true,
@@ -16,6 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "jira": "git://github.com/shaunburdick/node-jira",
+    "moment": "^2.10.3",
     "slack-client": "^1.4.0"
   }
 }

@@ -1,6 +1,7 @@
 var JiraApi = require('jira').JiraApi,
   Slack = require('slack-client'),
   fs = require('fs'),
+  moment = require('moment'),
   config = fs.existsSync('config.js') ? require('./config') : require('./config.js-dist');
 
 /**
@@ -100,6 +101,7 @@ slack.on('message', function(message) {
       for (var x in found) {
         jira.findIssue(found[x], function(error, issue) {
           if (!error) {
+            console.dir(issue);
             response = buildResponse(issue);
             channel.send(response);
             console.log("@" + slack.self.name + " responded with \"" + response + "\"");
@@ -131,15 +133,23 @@ slack.login();
 
 function buildResponse(issue) {
   var response = '';
+  var created = moment(issue.fields.created);
+  var updated = moment(issue.fields.updated);
   response += 'Here is some information on ' + issue.key + ':\n';
   response += '>*Link*: ' + buildJIRAURI(issue.key) + '\n';
   response += '>*Summary:* ' + issue.fields.summary + '\n';
-  response += '>*Status:* ' + issue.fields.status.name + '\n';
+  response += '>*Created:* ' + created.calendar();
+  response += '\t*Updated:* ' + updated.calendar() + '\n';
+  response += '>*Status:* ' + issue.fields.status.name;
+  response += '\t*Priority:* ' + issue.fields.priority.name + '\n';
   if (config.jira.sprintField) {
     response += '>*Sprint:* ' + (parseSprint(issue.fields[config.jira.sprintField]) || 'Not Assigned') + '\n';
   }
-  response += '>*Assignee:* ' + (JIRA2Slack(issue.fields.assignee.name) || issue.fields.assignee.displayName) + '\n';
-  response += '*Description:*\n' + issue.fields.description;
+  response += '>*Reporter:* ' + (JIRA2Slack(issue.fields.reporter.name) || issue.fields.reporter.displayName);
+  response += '\t*Assignee:* ' + (JIRA2Slack(issue.fields.assignee.name) || issue.fields.assignee.displayName) + '\n';
+  response += '*Description:*\n' 
+    + issue.fields.description
+      .replace(/\{quote\}/g, '```'); // Wrap quoted text to quasi-quote it
 
   return response;
 }

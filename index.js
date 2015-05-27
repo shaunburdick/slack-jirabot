@@ -101,7 +101,6 @@ slack.on('message', function(message) {
       for (var x in found) {
         jira.findIssue(found[x], function(error, issue) {
           if (!error) {
-            console.dir(issue);
             response = buildResponse(issue);
             channel.send(response);
             console.log("@" + slack.self.name + " responded with \"" + response + "\"");

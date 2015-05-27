@@ -139,7 +139,7 @@ function buildResponse(issue) {
   if (!description) {
     description = 'Ticket does not contain a description';
   } else if (description.length > 1000) { // Prevent giant descriptions
-    description = description.slice(0, 999);
+    description = description.slice(0, 999) + '\n\n_~~Description Continues in Ticket~~_';
   }
 
   response += 'Here is some information on ' + issue.key + ':\n';

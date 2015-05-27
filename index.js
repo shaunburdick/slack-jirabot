@@ -134,6 +134,14 @@ function buildResponse(issue) {
   var response = '';
   var created = moment(issue.fields.created);
   var updated = moment(issue.fields.updated);
+  var description = issue.fields.description;
+
+  if (!description) {
+    description = 'Ticket does not contain a description';
+  } else if (description.length > 1000) { // Prevent giant descriptions
+    description = description.slice(0, 999);
+  }
+
   response += 'Here is some information on ' + issue.key + ':\n';
   response += '>*Link*: ' + buildJIRAURI(issue.key) + '\n';
   response += '>*Summary:* ' + issue.fields.summary + '\n';
@@ -147,7 +155,7 @@ function buildResponse(issue) {
   response += '>*Reporter:* ' + (JIRA2Slack(issue.fields.reporter.name) || issue.fields.reporter.displayName);
   response += '\t*Assignee:* ' + (JIRA2Slack(issue.fields.assignee.name) || issue.fields.assignee.displayName) + '\n';
   response += '*Description:*\n' 
-    + issue.fields.description
+    + description
       .replace(/\{quote\}/g, '```'); // Wrap quoted text to quasi-quote it
 
   return response;

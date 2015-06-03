@@ -10,9 +10,15 @@ It will lookup the ticket and respond with some information about it.
 3. Copy `config.js-dist` to `config.js` and fill it out
 4. `npm start`
 
+## Test
+1. `npm install` (make sure your NODE_ENV != `production`)
+2. `npm test`
+
 ## Docker
 
 Build an image using `docker build -t your_image:tag`
+
+Official Image [shaunburdick/slack-jirabot](https://registry.hub.docker.com/u/shaunburdick/slack-jirabot/)
 
 ### Configuration Environment Variables
 You can set the configuration of the bot by using environment variables.
@@ -28,7 +34,7 @@ You can set the configuration of the bot by using environment variables.
 - *JIRA_VERBOSE*=false, Verbose logging
 - *JIRA_STRICT_SSL*=false, Set to false for self-signed certificates
 - *JIRA_REGEX*=([A-Z0-9]+\-[0-9]+), The regex to match JIRA tickets
-- *JIRA_SPRINT_FIELD*=, if using greenhopper, set the custom field that holds sprint information (customfield_1xxxx)
+- *JIRA_SPRINT_FIELD*=, if using greenhopper, set the custom field that holds sprint information (customfield_xxxxx)
 - *SLACK_TOKEN*=xoxb-foo, Your Slack Token
 - *SLACK_AUTO_RECONNECT*=true, Reconnect on disconnect
 - *SLACK_AUTO_MARK*=true, Mark messages as read

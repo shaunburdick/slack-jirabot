@@ -1,11 +1,12 @@
 {
   "name": "slack-jirabot",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Slackbot for interacting with JIRA",
   "main": "index.js",
   "private": true,
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "node_modules/jasmine-node/bin/jasmine-node spec --verbose --captureExceptions"
   },
   "author": "Shaun Burdick <github@shaunburdick.com>",
   "homepage": "http://github.com/shaunburdick/slack-jirabot",
@@ -18,5 +19,8 @@
     "jira": "git://github.com/shaunburdick/node-jira",
     "moment": "^2.10.3",
     "slack-client": "^1.4.0"
+  },
+  "devDependencies": {
+    "jasmine-node": "^1.14.5"
   }
 }

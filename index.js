@@ -1,4 +1,5 @@
 var fs = require('fs'),
+  logger = require('./lib/logger'),
   config = fs.existsSync('config.js') ? require('./config') : require('./config.js-dist'),
   Bot = require('./lib/bot');
 
@@ -21,8 +22,7 @@ config.slack.token = process.env.SLACK_TOKEN || config.slack.token;
 config.slack.autoReconnect = process.env.SLACK_AUTO_RECONNECT || config.slack.autoReconnect;
 config.slack.autoMark = process.env.SLACK_AUTO_MARK || config.slack.autoMark;
 
-console.log("Using the following configuration:");
-console.dir(config);
+logger.info("Using the following configuration:", config);
 
 var bot = new Bot(config);
 

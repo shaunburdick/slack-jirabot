@@ -77,10 +77,10 @@ describe ('Bot', function () {
     it ('should parse unique jira tickets from a message', function() {
       var bot = new Bot(config);
 
-      expect(bot.parseTickets('blarty blar TEST-1')).toEqual(['TEST-1']);
-      expect(bot.parseTickets('blarty blar TEST-2 TEST-2')).toEqual(['TEST-2']);
-      expect(bot.parseTickets('blarty blar TEST-3 TEST-4')).toEqual(['TEST-3', 'TEST-4']);
-      expect(bot.parseTickets('blarty blar Test-1 Test-1')).toEqual([]);
+      expect(bot.parseTickets('Chan', 'blarty blar TEST-1')).toEqual(['TEST-1']);
+      expect(bot.parseTickets('Chan', 'blarty blar TEST-2 TEST-2')).toEqual(['TEST-2']);
+      expect(bot.parseTickets('Chan', 'blarty blar TEST-3 TEST-4')).toEqual(['TEST-3', 'TEST-4']);
+      expect(bot.parseTickets('Chan', 'blarty blar Test-1 Test-1')).toEqual([]);
     });
   });
 
@@ -88,24 +88,38 @@ describe ('Bot', function () {
     it ('should populate the ticket buffer', function() {
       var bot = new Bot(config);
       var ticket = 'TEST-1';
+      var channel = 'Test';
+      var hash = bot.hashTicket(channel, ticket);
 
-      expect(bot.parseTickets('foo ' + ticket)).toEqual([ticket]);
-      expect(bot.ticketBuffer.hasOwnProperty(ticket)).toBeTruthy();
+      expect(bot.parseTickets(channel, 'foo ' + ticket)).toEqual([ticket]);
+      expect(bot.ticketBuffer.hasOwnProperty(hash)).toBeTruthy();
       // Expect the ticket to not be repeated
-      expect(bot.parseTickets('foo ' + ticket)).toEqual([]);
+      expect(bot.parseTickets(channel, 'foo ' + ticket)).toEqual([]);
+    });
+
+    it ('should respond to the same ticket in different channels', function() {
+      var bot = new Bot(config);
+      var ticket = 'TEST-1';
+      var channel1 = 'Test1';
+      var channel2 = 'Test2';
+
+      expect(bot.parseTickets(channel1, 'foo ' + ticket)).toEqual([ticket]);
+      expect(bot.parseTickets(channel2, 'foo ' + ticket)).toEqual([ticket]);
     });
 
     it ('should cleanup the ticket buffer', function() {
       var bot = new Bot(config);
       var ticket = 'TEST-1';
+      var channel = 'Test';
+      var hash = bot.hashTicket(channel, ticket);
 
-      expect(bot.parseTickets('foo ' + ticket)).toEqual([ticket]);
-      expect(bot.ticketBuffer.hasOwnProperty(ticket)).toBeTruthy();
+      expect(bot.parseTickets(channel, 'foo ' + ticket)).toEqual([ticket]);
+      expect(bot.ticketBuffer.hasOwnProperty(hash)).toBeTruthy();
 
       // set the Ticket Buffer Length low to trigger the cleanup
       bot.TICKET_BUFFER_LENGTH = -1;
       bot.cleanupTicketBuffer();
-      expect(bot.ticketBuffer.hasOwnProperty(ticket)).toBeFalsy();
+      expect(bot.ticketBuffer.hasOwnProperty(hash)).toBeFalsy();
     });
   });
 

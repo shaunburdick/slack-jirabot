@@ -1,6 +1,8 @@
-var winston = require('winston');
+/// <reference path="../typings/tsd.d.ts" />
 
-var logger = new (winston.Logger)({
+import winston = require('winston');
+
+var logger: winston.LoggerInstance = new winston.Logger({
   transports: [
     new (winston.transports.Console)({
       timestamp: true,
@@ -11,4 +13,4 @@ var logger = new (winston.Logger)({
 });
 logger.cli();
 
-module.exports = logger;
+export = logger;

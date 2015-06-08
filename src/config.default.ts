@@ -1,4 +1,6 @@
-module.exports = {
+import Config = require('./lib/ConfigInterface');
+
+var config: Config = {
   jira: {
     protocol: 'https', // https or http
     host: 'jira.yourhost.domain', // Hostname for JIRA
@@ -22,3 +24,5 @@ module.exports = {
     // "jira-username": "slack-username"
   }
 };
+
+export = config;

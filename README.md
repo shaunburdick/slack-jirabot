@@ -7,7 +7,7 @@ It will lookup the ticket and respond with some information about it.
 ## Install
 1. Clone this [repository](https://github.com/shaunburdick/slack-jirabot.git)
 2. `npm install`
-3. Copy `config.js-dist` to `config.js` and fill it out
+3. Copy `src/config.default.ts` to `src/config.ts` and fill it out
 4. `npm start`
 
 ## Test

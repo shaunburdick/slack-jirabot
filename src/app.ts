@@ -1,7 +1,11 @@
-var fs = require('fs'),
-  logger = require('./lib/logger'),
-  config = fs.existsSync('config.js') ? require('./config') : require('./config.js-dist'),
-  Bot = require('./lib/bot');
+/// <reference path="./typings/tsd.d.ts" />
+
+import fs = require('fs');
+import Config = require('./lib/ConfigInterface');
+import logger = require('./lib/logger');
+import Bot = require('./lib/bot');
+
+var config: Config = fs.existsSync('config.js') ? require('./config') : require('./config.default');
 
 /**
  * Pull config from ENV if set

@@ -1,21 +1,24 @@
-var Bot = require('../lib/bot.js'),
-  config_dist = require('../config.js-dist');
+/// <reference path="../typings/tsd.d.ts" />
 
-describe ('Bot', function () {
-  var config = {};
+import Bot = require('../lib/bot');
+import Config = require('../lib/ConfigInterface');
+var config_dist: Config = require('../config.default.js');
 
-  beforeEach(function() {
+describe ('Bot', () => {
+  var config: Config;
+
+  beforeEach(() => {
     // reset the configuration
     config = config_dist;
   });
 
-  it ('should instantiate and set config', function() {
+  it ('should instantiate and set config', () => {
     var bot = new Bot(config);
     expect(bot.config).toEqual(config);
   });
 
-  describe('Parse/Build Issues', function() {
-    it ('should build issue links correctly', function() {
+  describe('Parse/Build Issues', () => {
+    it ('should build issue links correctly', () => {
       var bot = new Bot(config);
 
       var issueKey = 'TEST-1';
@@ -24,7 +27,7 @@ describe ('Bot', function () {
       expect(bot.buildIssueLink(issueKey)).toEqual(expectedLink);
     });
 
-    it ('should build issue links correctly with base', function() {
+    it ('should build issue links correctly with base', () => {
       config.jira.base = 'foo';
       var bot = new Bot(config);
 
@@ -35,7 +38,7 @@ describe ('Bot', function () {
     });
   });
 
-  describe('Parsing Fields', function() {
+  describe('Parsing Fields', () => {
     it ('should parse a sprint name from greenhopper field', function() {
       var bot = new Bot(config);
 
@@ -48,7 +51,7 @@ describe ('Bot', function () {
       expect(bot.parseSprint(['busted'])).toBeFalsy()
     });
 
-    it ('should parse a sprint name from the last sprint in the greenhopper field', function() {
+    it ('should parse a sprint name from the last sprint in the greenhopper field', () => {
       var bot = new Bot(config);
 
       var sprintName = 'TEST';
@@ -61,7 +64,7 @@ describe ('Bot', function () {
       expect(bot.parseSprint(exampleSprint)).toEqual(sprintName+'3');
     });
 
-    it ('should translate a jira username to a slack username', function() {
+    it ('should translate a jira username to a slack username', () => {
       config.usermap = {
         'foo': 'bar',
         'fizz': 'buzz',
@@ -74,7 +77,7 @@ describe ('Bot', function () {
       expect(bot.JIRA2Slack('blap')).toBeFalsy();
     });
 
-    it ('should parse unique jira tickets from a message', function() {
+    it ('should parse unique jira tickets from a message', () => {
       var bot = new Bot(config);
 
       expect(bot.parseTickets('Chan', 'blarty blar TEST-1')).toEqual(['TEST-1']);
@@ -84,8 +87,8 @@ describe ('Bot', function () {
     });
   });
 
-  describe('Ticket Buffering', function() {
-    it ('should populate the ticket buffer', function() {
+  describe('Ticket Buffering', () => {
+    it ('should populate the ticket buffer', () => {
       var bot = new Bot(config);
       var ticket = 'TEST-1';
       var channel = 'Test';
@@ -97,7 +100,7 @@ describe ('Bot', function () {
       expect(bot.parseTickets(channel, 'foo ' + ticket)).toEqual([]);
     });
 
-    it ('should respond to the same ticket in different channels', function() {
+    it ('should respond to the same ticket in different channels', () => {
       var bot = new Bot(config);
       var ticket = 'TEST-1';
       var channel1 = 'Test1';
@@ -107,7 +110,7 @@ describe ('Bot', function () {
       expect(bot.parseTickets(channel2, 'foo ' + ticket)).toEqual([ticket]);
     });
 
-    it ('should cleanup the ticket buffer', function() {
+    it ('should cleanup the ticket buffer', () => {
       var bot = new Bot(config);
       var ticket = 'TEST-1';
       var channel = 'Test';
@@ -123,10 +126,10 @@ describe ('Bot', function () {
     });
   });
 
-  describe("Issue Response", function() {
+  describe("Issue Response", () => {
     var issue;
 
-    beforeEach(function() {
+    beforeEach(() => {
       issue = {
         key: 'TEST-1',
         fields: {
@@ -152,13 +155,13 @@ describe ('Bot', function () {
       };
     });
 
-    it ('should return a default description if empty', function() {
+    it ('should return a default description if empty', () => {
       var bot = new Bot(config);
 
       expect(bot.formatIssueDescription('')).toEqual('Ticket does not contain a description');
     });
 
-    it ('should truncate a long description', function() {
+    it ('should truncate a long description', () => {
       var bot = new Bot(config);
       var longDescription = Array(1500).join('a');
 
@@ -166,7 +169,7 @@ describe ('Bot', function () {
         .toBeLessThan(longDescription.length);
     });
 
-    it ('should replace quotes', function() {
+    it ('should replace quotes', () => {
       var bot = new Bot(config);
 
       expect(bot.formatIssueDescription('{quote}foo{quote}'))

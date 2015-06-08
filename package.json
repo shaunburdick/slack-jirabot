@@ -2,10 +2,10 @@
   "name": "slack-jirabot",
   "version": "1.2.0",
   "description": "Slackbot for interacting with JIRA",
-  "main": "index.js",
+  "main": "release/js/app.js",
   "private": true,
   "scripts": {
-    "start": "node_modules/.bin/gulp build && node release/js/app.js",
+    "start": "node release/js/app.js",
     "test": "node_modules/.bin/jasmine-node release/js/spec --verbose --captureExceptions"
   },
   "author": "Shaun Burdick <github@shaunburdick.com>",
@@ -16,14 +16,17 @@
   },
   "license": "ISC",
   "dependencies": {
-    "gulp": "^3.9.0",
-    "gulp-typescript": "^2.7.6",
     "jira": "git://github.com/shaunburdick/node-jira",
     "moment": "^2.10.3",
     "slack-client": "^1.4.1",
     "winston": "^1.0.0"
   },
   "devDependencies": {
+    "del": "^1.2.0",
+    "gulp": "^3.9.0",
+    "gulp-batch": "^1.0.5",
+    "gulp-typescript": "^2.7.6",
+    "gulp-watch": "^4.2.4",
     "jasmine-node": "^1.14.5"
   }
 }

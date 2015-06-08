@@ -34,10 +34,6 @@ class Bot {
    * @param object config The final configuration for the bot
    */
   constructor (public config: Config) {
-    /** @var Object Configuration values */
-    this.config = config;
-
-
     this.slack = new Slack(
       config.slack.token,
       config.slack.autoReconnect,
@@ -66,23 +62,23 @@ class Bot {
    */
   issueResponse (issue: Issue): string {
     var response = '';
-    var created = moment(issue.fields.created);
-    var updated = moment(issue.fields.updated);
-    var description = this.formatIssueDescription(issue.fields.description);
+    var created = moment(issue['fields']['created']);
+    var updated = moment(issue['fields']['updated']);
+    var description = this.formatIssueDescription(issue['fields']['description']);
 
-    response += 'Here is some information on ' + issue.key + ':\n';
-    response += '>*Link*: ' + this.buildIssueLink(issue.key) + '\n';
-    response += '>*Summary:* ' + issue.fields.summary + '\n';
-    response += '>*Created:* ' + created.calendar();
-    response += '\t*Updated:* ' + updated.calendar() + '\n';
-    response += '>*Status:* ' + issue.fields.status.name;
-    response += '\t*Priority:* ' + issue.fields.priority.name + '\n';
+    response += `Here is some information on ${issue.key}:\n`;
+    response += `>*Link*: ${this.buildIssueLink(issue.key)}\n`;
+    response += `>*Summary:* ${issue['fields']['summary']}\n`;
+    response += `>*Created:* ${created.calendar()}`;
+    response += `\t*Updated:* ${updated.calendar()}\n`;
+    response += `>*Status:* ${issue['fields']['status']['name']}`;
+    response += `\t*Priority:* ${issue['fields']['priority']['name']}\n`;
     if (this.config.jira.sprintField) {
-      response += '>*Sprint:* ' + (this.parseSprint(issue.fields[this.config.jira.sprintField]) || 'Not Assigned') + '\n';
+      response += `>*Sprint:* ${(this.parseSprint(issue['fields'][this.config.jira.sprintField]) || 'Not Assigned')}\n`;
     }
-    response += '>*Reporter:* ' + (this.JIRA2Slack(issue.fields.reporter.name) || issue.fields.reporter.displayName);
-    response += '\t*Assignee:* ' + (this.JIRA2Slack(issue.fields.assignee.name) || issue.fields.assignee.displayName) + '\n';
-    response += '*Description:*\n' + description;
+    response += `>*Reporter:* ${(this.JIRA2Slack(issue['fields']['reporter'].name) || issue['fields']['reporter'].displayName)}`;
+    response += `\t*Assignee:* ${(this.JIRA2Slack(issue['fields']['assignee'].name) || issue['fields']['assignee'].displayName)}\n`;
+    response += `* Description:*\n${description}`;
 
     return response;
   }

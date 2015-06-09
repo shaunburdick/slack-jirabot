@@ -1,11 +1,20 @@
 /// <reference path="./typings/tsd.d.ts" />
 
-import fs = require('fs');
 import Config = require('./lib/ConfigInterface');
 import logger = require('./lib/logger');
 import Bot = require('./lib/bot');
 
-var config: Config = fs.existsSync('config.js') ? require('./config') : require('./config.default');
+var config: Config = (function() {
+  var retVal: Config;
+
+  try { // local config first
+    retVal = require('./config');
+  } catch (e) { // default config
+    retVal = require('./config.default');
+  }
+
+  return retVal;
+}());
 
 /**
  * Pull config from ENV if set

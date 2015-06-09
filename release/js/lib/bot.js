@@ -14,32 +14,6 @@ var Bot = (function () {
         this.ticketBuffer = {};
         /* Length of buffer to prevent ticket from being responded to */
         this.TICKET_BUFFER_LENGTH = 300000;
-        /**
-         * Function to be called on slack open
-         */
-        this.slackOpen = function () {
-            var unreads = this.slack.getUnreadCount();
-            var id;
-            var channels = [];
-            var allChannels = this.slack.channels;
-            for (id in allChannels) {
-                if (allChannels[id].is_member) {
-                    channels.push("#" + allChannels[id].name);
-                }
-            }
-            var groups = [];
-            var allGroups = this.slack.groups;
-            for (id in allGroups) {
-                if (allGroups[id].is_open && !allGroups[id].is_archived) {
-                    groups.push(allGroups[id].name);
-                }
-            }
-            logger.info("Welcome to Slack. You are @%s of " + this.slack.team.name, this.slack.self.name);
-            logger.info('You are in: %s', channels.join(', '));
-            logger.info('As well as: %s', groups.join(', '));
-            var messages = unreads === 1 ? 'message' : 'messages';
-            logger.info("You have %d unread " + messages, unreads);
-        };
         this.slack = new Slack(config.slack.token, config.slack.autoReconnect, config.slack.autoMark);
         this.jira = new JiraApi(config.jira.protocol, config.jira.host, config.jira.port, config.jira.user, config.jira.pass, config.jira.apiVersion, config.jira.verbose, config.jira.strictSSL, null, config.jira.base);
     }
@@ -131,7 +105,7 @@ var Bot = (function () {
     Bot.prototype.JIRA2Slack = function (username) {
         var retVal = '';
         if (this.config.usermap[username]) {
-            retVal = '@' + this.config.usermap[username];
+            retVal = "@" + this.config.usermap[username];
         }
         return retVal;
     };
@@ -170,7 +144,7 @@ var Bot = (function () {
      * @return string The unique hash
      */
     Bot.prototype.hashTicket = function (channel, ticket) {
-        return channel + '-' + ticket;
+        return "" + channel + "-" + ticket;
     };
     /**
      * Remove any tickets from the buffer if they are past the length
@@ -182,6 +156,32 @@ var Bot = (function () {
                 delete this.ticketBuffer[x];
             }
         }
+    };
+    /**
+     * Function to be called on slack open
+     */
+    Bot.prototype.slackOpen = function () {
+        var unreads = this.slack.getUnreadCount();
+        var id;
+        var channels = [];
+        var allChannels = this.slack.channels;
+        for (id in allChannels) {
+            if (allChannels[id].is_member) {
+                channels.push("#" + allChannels[id].name);
+            }
+        }
+        var groups = [];
+        var allGroups = this.slack.groups;
+        for (id in allGroups) {
+            if (allGroups[id].is_open && !allGroups[id].is_archived) {
+                groups.push(allGroups[id].name);
+            }
+        }
+        logger.info("Welcome to Slack. You are @" + this.slack.self.name + " of " + this.slack.team.name);
+        logger.info("You are in: " + channels.join(', '));
+        logger.info("As well as: " + groups.join(', '));
+        var messages = unreads === 1 ? 'message' : 'messages';
+        logger.info("You have " + unreads + " unread " + messages);
     };
     /**
      * Handle an incoming message
@@ -199,16 +199,16 @@ var Bot = (function () {
         if (type === 'message' && (text != null) && (channel != null)) {
             var found = this.parseTickets(channelName, text);
             if (found && found.length) {
-                logger.info('Detected %s from ' + userName, found.join(','));
+                logger.info("Detected " + found.join(',') + " from " + userName);
                 for (var x in found) {
                     this.jira.findIssue(found[x], function (error, issue) {
                         if (!error) {
                             response = self.issueResponse(issue);
                             channel.send(response);
-                            logger.info("@" + self.slack.self.name + " responded with \"%s\"", response);
+                            logger.info("@" + self.slack.self.name + " responded with \"" + response + "\"");
                         }
                         else {
-                            logger.error("Got an error trying to find %s:", found[x], error);
+                            logger.error("Got an error trying to find " + found[x], error);
                         }
                     });
                 }
@@ -223,7 +223,7 @@ var Bot = (function () {
             var errors = [typeError, textError, channelError].filter(function (element) {
                 return element !== null;
             }).join(' ');
-            logger.info("@%s could not respond. " + errors, this.slack.self.name);
+            logger.info("@" + this.slack.self.name + " could not respond. " + errors);
         }
     };
     /**

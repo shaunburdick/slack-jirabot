@@ -154,7 +154,7 @@ class Bot {
     var retVal = '';
 
     if (this.config.usermap[username]) {
-      retVal = '@' + this.config.usermap[username];
+      retVal = `@${this.config.usermap[username]}`;
     }
 
     return retVal;
@@ -204,7 +204,7 @@ class Bot {
    * @return string The unique hash
    */
   hashTicket (channel:string, ticket:string): string {
-    return channel + '-' + ticket;
+    return `${channel}-${ticket}`;
   }
 
   /**
@@ -223,7 +223,7 @@ class Bot {
   /**
    * Function to be called on slack open
    */
-  slackOpen = function(): void {
+  slackOpen (): void {
     var unreads = this.slack.getUnreadCount();
 
     var id: string;
@@ -231,7 +231,7 @@ class Bot {
     var allChannels = this.slack.channels;
     for (id in allChannels) {
       if (allChannels[id].is_member) {
-        channels.push("#" + allChannels[id].name);
+        channels.push(`#${allChannels[id].name}`);
       }
     }
 
@@ -243,11 +243,11 @@ class Bot {
       }
     }
 
-    logger.info("Welcome to Slack. You are @%s of " + this.slack.team.name, this.slack.self.name);
-    logger.info('You are in: %s', channels.join(', '));
-    logger.info('As well as: %s', groups.join(', '));
+    logger.info(`Welcome to Slack. You are @${this.slack.self.name} of ${this.slack.team.name}`);
+    logger.info(`You are in: ${channels.join(', ')}`);
+    logger.info(`As well as: ${groups.join(', ')}`);
     var messages = unreads === 1 ? 'message' : 'messages';
-    logger.info("You have %d unread " + messages, unreads);
+    logger.info(`You have ${unreads} unread ${messages}`);
   }
 
   /**
@@ -262,20 +262,20 @@ class Bot {
     var type = message.type, ts = message.ts, text = message.text;
     var channelName = (channel != null ? channel.is_channel : void 0) ? '#' : '';
     channelName = channelName + (channel ? channel.name : 'UNKNOWN_CHANNEL');
-    var userName = (user != null ? user.name : void 0) != null ? "@" + user.name : "UNKNOWN_USER";
+    var userName = (user != null ? user.name : void 0) != null ? `@${user.name}` : "UNKNOWN_USER";
 
     if (type === 'message' && (text != null) && (channel != null)) {
       var found = this.parseTickets(channelName, text);
       if (found && found.length) {
-        logger.info('Detected %s from ' + userName, found.join(','));
+        logger.info(`Detected ${found.join(',')} from ${userName}`);
         for (var x in found) {
           this.jira.findIssue(found[x], function(error: any, issue: Issue) {
             if (!error) {
               response = self.issueResponse(issue);
               channel.send(response);
-              logger.info("@" + self.slack.self.name+" responded with \"%s\"", response);
+              logger.info(`@${self.slack.self.name} responded with "${response}"`);
             } else {
-              logger.error("Got an error trying to find %s:", found[x], error);
+              logger.error(`Got an error trying to find ${found[x]}`, error);
             }
           });
         }
@@ -283,13 +283,13 @@ class Bot {
         // Do nothing
       }
     } else {
-      var typeError = type !== 'message' ? "unexpected type " + type + "." : null;
+      var typeError = type !== 'message' ? `unexpected type ${type}.` : null;
       var textError = text == null ? 'text was undefined.' : null;
       var channelError = channel == null ? 'channel was undefined.' : null;
       var errors = [typeError, textError, channelError].filter(function(element) {
         return element !== null;
       }).join(' ');
-      logger.info("@%s could not respond. " + errors, this.slack.self.name);
+      logger.info(`@${this.slack.self.name} could not respond. ${errors}`);
     }
   }
 

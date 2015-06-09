@@ -1,8 +1,16 @@
 /// <reference path="./typings/tsd.d.ts" />
-var fs = require('fs');
 var logger = require('./lib/logger');
 var Bot = require('./lib/bot');
-var config = fs.existsSync('config.js') ? require('./config') : require('./config.default');
+var config = (function () {
+    var retVal;
+    try {
+        retVal = require('./config');
+    }
+    catch (e) {
+        retVal = require('./config.default');
+    }
+    return retVal;
+}());
 /**
  * Pull config from ENV if set
  */

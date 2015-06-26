@@ -1,10 +1,9 @@
-FROM node:onbuild
+FROM node:latest
 
 MAINTAINER Shaun Burdick <docker@shaunburdick.com>
 
-ADD . /usr/src/myapp
-
-ENV JIRA_PROTOCOL=https \
+ENV NODE_ENV=production \
+    JIRA_PROTOCOL=https \
     JIRA_HOST=jira.yourdomain.com \
     JIRA_PORT=443 \
     JIRA_BASE= \
@@ -18,3 +17,11 @@ ENV JIRA_PROTOCOL=https \
     SLACK_TOKEN=xoxb-foo \
     SLACK_AUTO_RECONNECT=true \
     SLACK_AUTO_MARK=true
+
+ADD . /usr/src/myapp
+
+WORKDIR /usr/src/myapp
+
+RUN ["npm", "install"]
+
+CMD ["npm", "start"]

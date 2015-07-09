@@ -39,7 +39,12 @@ var Bot = (function () {
             response += ">*Sprint:* " + (this.parseSprint(issue['fields'][this.config.jira.sprintField]) || 'Not Assigned') + "\n";
         }
         response += ">*Reporter:* " + (this.JIRA2Slack(issue['fields']['reporter'].name) || issue['fields']['reporter'].displayName);
-        response += "\t*Assignee:* " + (this.JIRA2Slack(issue['fields']['assignee'].name) || issue['fields']['assignee'].displayName) + "\n";
+        if (issue['fields']['assignee']) {
+            response += "\t*Assignee:* " + (this.JIRA2Slack(issue['fields']['assignee'].name) || issue['fields']['assignee'].displayName) + "\n";
+        }
+        else {
+            response += '\t*Assignee:* Unassigned\n';
+        }
         response += "* Description:*\n" + description;
         return response;
     };
@@ -193,10 +198,10 @@ var Bot = (function () {
         var user = this.slack.getUserByID(message.user);
         var response = '';
         var type = message.type, ts = message.ts, text = message.text;
-        var channelName = (channel != null ? channel.is_channel : void 0) ? '#' : '';
+        var channelName = (channel && channel.is_channel) ? '#' : '';
         channelName = channelName + (channel ? channel.name : 'UNKNOWN_CHANNEL');
-        var userName = (user != null ? user.name : void 0) != null ? "@" + user.name : "UNKNOWN_USER";
-        if (type === 'message' && (text != null) && (channel != null)) {
+        var userName = (user && user.name) ? "@" + user.name : "UNKNOWN_USER";
+        if (type === 'message' && (text !== null) && (channel !== null)) {
             var found = this.parseTickets(channelName, text);
             if (found && found.length) {
                 logger.info("Detected " + found.join(',') + " from " + userName);
@@ -218,8 +223,8 @@ var Bot = (function () {
         }
         else {
             var typeError = type !== 'message' ? "unexpected type " + type + "." : null;
-            var textError = text == null ? 'text was undefined.' : null;
-            var channelError = channel == null ? 'channel was undefined.' : null;
+            var textError = text === null ? 'text was undefined.' : null;
+            var channelError = channel === null ? 'channel was undefined.' : null;
             var errors = [typeError, textError, channelError].filter(function (element) {
                 return element !== null;
             }).join(' ');

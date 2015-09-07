@@ -16,7 +16,7 @@
   },
   "license": "ISC",
   "dependencies": {
-    "jira": "git://github.com/shaunburdick/node-jira",
+    "jira": "git://github.com/shaunburdick/node-jira.git",
     "moment": "^2.10.3",
     "slack-client": "^1.4.1",
     "winston": "^1.0.0"

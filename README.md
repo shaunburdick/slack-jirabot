@@ -69,8 +69,9 @@ shaunburdick/slack-jirabot:latest
 
 ## Contributing
 Once you've made your great commits:
-1. [Fork][fk] it!
+
+1. Fork it!
 2. Create a topic branch - `git checkout -b my_branch`
 3. Push to your branch - `git push origin my_branch`
-4. Create an [Issue][is] with a link to your branch
+4. Create an Issue with a link to your branch
 5. That's it!

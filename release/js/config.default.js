@@ -10,7 +10,8 @@ var config = {
         verbose: false,
         strictSSL: false,
         regex: /([A-Z]{1}[A-Z0-9]+\-[0-9]+)/g,
-        sprintField: '' // If using greenhopper, set the custom field that holds sprint information (customfield_1xxxx)
+        sprintField: '',
+        customFields: {}
     },
     slack: {
         token: 'xoxb-Your-Token',

@@ -12,7 +12,11 @@ var config: Config = {
     verbose: false, // Verbose logging
     strictSSL: false, // Set false for self-signed certificates
     regex: /([A-Z]{1}[A-Z0-9]+\-[0-9]+)/g, // The regex to match JIRA Tickets
-    sprintField: '' // If using greenhopper, set the custom field that holds sprint information (customfield_1xxxx)
+    sprintField: '', // If using greenhopper, set the custom field that holds sprint information (customfield_1xxxx)
+    customFields: {
+      // Add any custom fields you would like to display
+      // customfield_1xxxx: "Custom Title"
+    }
   },
   slack: {
     token: 'xoxb-Your-Token', // Your Slack Token

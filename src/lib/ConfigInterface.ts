@@ -13,6 +13,7 @@ interface ConfigInterface {
     strictSSL: boolean;
     regex: RegExp;
     sprintField: string;
+    customFields: { [id: string]: string }
   }
 
   slack: {

@@ -150,7 +150,9 @@ describe ('Bot', () => {
           assignee: {
             name: 'fred',
             displayName: 'Fred'
-          }
+          },
+          customfield_10000: 'Fizz',
+          customfield_10001: 'Buzz'
         }
       };
     });
@@ -174,6 +176,27 @@ describe ('Bot', () => {
 
       expect(bot.formatIssueDescription('{quote}foo{quote}'))
         .toEqual('```foo```');
+    });
+
+    it ('should replace code blocks', () => {
+      var bot = new Bot(config);
+
+      expect(bot.formatIssueDescription('{code}foo{code}'))
+        .toEqual('```foo```');
+    });
+
+    it ('should show custom fields', () => {
+      // Add some custom fields
+      config.jira.customFields['customfield_10000'] = 'CF1';
+      config.jira.customFields['customfield_10001'] = 'CF2';
+
+      var bot = new Bot(config);
+      var response = bot.issueResponse(issue);
+
+      expect(response).toMatch(/CF1/);
+      expect(response).toMatch(/CF2/);
+      expect(response).toMatch(/Fizz/);
+      expect(response).toMatch(/Buzz/);
     });
   });
 });

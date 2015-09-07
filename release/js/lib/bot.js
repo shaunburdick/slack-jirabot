@@ -35,8 +35,17 @@ var Bot = (function () {
         response += "\t*Updated:* " + updated.calendar() + "\n";
         response += ">*Status:* " + issue['fields']['status']['name'];
         response += "\t*Priority:* " + issue['fields']['priority']['name'] + "\n";
+        // Sprint fields
         if (this.config.jira.sprintField) {
             response += ">*Sprint:* " + (this.parseSprint(issue['fields'][this.config.jira.sprintField]) || 'Not Assigned') + "\n";
+        }
+        // Custom fields
+        if (this.config.jira.customFields && Object.keys(this.config.jira.customFields).length) {
+            for (var customField in this.config.jira.customFields) {
+                if (issue['fields'][customField]) {
+                    response += ">*" + this.config.jira.customFields[customField] + ":* " + issue['fields'][customField] + "\n";
+                }
+            }
         }
         response += ">*Reporter:* " + (this.JIRA2Slack(issue['fields']['reporter'].name) || issue['fields']['reporter'].displayName);
         if (issue['fields']['assignee']) {
@@ -64,7 +73,7 @@ var Bot = (function () {
         else if (description.length > 1000) {
             description = description.slice(0, 999) + '\n\n_~~Description Continues in Ticket~~_';
         }
-        return description.replace(/\{quote\}/g, '```');
+        return description.replace(/\{(quote|code)\}/g, '```');
     };
     /**
      * Construct a link to an issue based on the issueKey and config
@@ -209,8 +218,13 @@ var Bot = (function () {
                     this.jira.findIssue(found[x], function (error, issue) {
                         if (!error) {
                             response = self.issueResponse(issue);
-                            channel.send(response);
-                            logger.info("@" + self.slack.self.name + " responded with \"" + response + "\"");
+                            var result = channel.send(response);
+                            if (result) {
+                                logger.info("@" + self.slack.self.name + " responded with \"" + response + "\"");
+                            }
+                            else {
+                                logger.error('It appears we are disconnected');
+                            }
                         }
                         else {
                             logger.error("Got an error trying to find " + found[x], error);

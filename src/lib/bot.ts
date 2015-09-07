@@ -104,7 +104,7 @@ class Bot {
     }
 
     return description
-      .replace(/\{quote\}/g, '```');
+      .replace(/\{(quote|code)\}/g, '```');
   }
 
   /**
@@ -276,8 +276,12 @@ class Bot {
           this.jira.findIssue(found[x], function(error: any, issue: Issue) {
             if (!error) {
               response = self.issueResponse(issue);
-              channel.send(response);
-              logger.info(`@${self.slack.self.name} responded with "${response}"`);
+              var result = channel.send(response);
+              if (result) {
+                logger.info(`@${self.slack.self.name} responded with "${response}"`);
+              } else {
+                logger.error('It appears we are disconnected');
+              }
             } else {
               logger.error(`Got an error trying to find ${found[x]}`, error);
             }

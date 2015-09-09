@@ -152,7 +152,9 @@ describe ('Bot', () => {
             displayName: 'Fred'
           },
           customfield_10000: 'Fizz',
-          customfield_10001: 'Buzz'
+          customfield_10001: {
+            value: 'Buzz'
+          }
         }
       };
     });
@@ -188,7 +190,7 @@ describe ('Bot', () => {
     it ('should show custom fields', () => {
       // Add some custom fields
       config.jira.customFields['customfield_10000'] = 'CF1';
-      config.jira.customFields['customfield_10001'] = 'CF2';
+      config.jira.customFields['customfield_10001.value'] = 'CF2';
 
       var bot = new Bot(config);
       var response = bot.issueResponse(issue);

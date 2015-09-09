@@ -16,6 +16,8 @@ var config: Config = {
     customFields: {
       // Add any custom fields you would like to display
       // customfield_1xxxx: "Custom Title"
+      // Object custom field: Show a member of object
+      // "customfield_1xxxx.member": "Custom Title"
     }
   },
   slack: {

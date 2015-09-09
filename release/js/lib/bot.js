@@ -42,8 +42,21 @@ var Bot = (function () {
         // Custom fields
         if (this.config.jira.customFields && Object.keys(this.config.jira.customFields).length) {
             for (var customField in this.config.jira.customFields) {
-                if (issue['fields'][customField]) {
-                    response += ">*" + this.config.jira.customFields[customField] + ":* " + issue['fields'][customField] + "\n";
+                var fieldVal = null;
+                var cfSplit = customField.split('.');
+                switch (cfSplit.length) {
+                    case 1:
+                        fieldVal = issue['fields'][cfSplit[0]] || fieldVal;
+                        break;
+                    case 2:
+                        try {
+                            fieldVal = issue['fields'][cfSplit[0]][cfSplit[1]];
+                        }
+                        catch (e) { } // Ignore error :/
+                        break;
+                }
+                if (fieldVal) {
+                    response += ">*" + this.config.jira.customFields[customField] + ":* " + fieldVal + "\n";
                 }
             }
         }
@@ -73,7 +86,8 @@ var Bot = (function () {
         else if (description.length > 1000) {
             description = description.slice(0, 999) + '\n\n_~~Description Continues in Ticket~~_';
         }
-        return description.replace(/\{(quote|code)\}/g, '```');
+        return description
+            .replace(/\{(quote|code)\}/g, '```');
     };
     /**
      * Construct a link to an issue based on the issueKey and config
@@ -87,7 +101,9 @@ var Bot = (function () {
             // Strip preceeding and trailing forward slash
             base = '/' + this.config.jira.base.replace(/^\/|\/$/g, '') + base;
         }
-        return this.config.jira.protocol + '://' + this.config.jira.host + ':' + this.config.jira.port + base + issueKey;
+        return this.config.jira.protocol + '://'
+            + this.config.jira.host + ':' + this.config.jira.port
+            + base + issueKey;
     };
     /**
      * Parses the sprint name of a ticket.
@@ -141,7 +157,9 @@ var Bot = (function () {
         if (found && found.length) {
             for (var x in found) {
                 ticketHash = this.hashTicket(channel, found[x]);
-                if (!uniques.hasOwnProperty(found[x]) && (!this.ticketBuffer.hasOwnProperty(ticketHash) || (now - this.ticketBuffer[ticketHash]) > this.TICKET_BUFFER_LENGTH)) {
+                if (!uniques.hasOwnProperty(found[x])
+                    && (!this.ticketBuffer.hasOwnProperty(ticketHash)
+                        || (now - this.ticketBuffer[ticketHash]) > this.TICKET_BUFFER_LENGTH)) {
                     retVal.push(found[x]);
                     uniques[found[x]] = 1;
                     this.ticketBuffer[ticketHash] = now;
@@ -158,7 +176,7 @@ var Bot = (function () {
      * @return string The unique hash
      */
     Bot.prototype.hashTicket = function (channel, ticket) {
-        return "" + channel + "-" + ticket;
+        return channel + "-" + ticket;
     };
     /**
      * Remove any tickets from the buffer if they are past the length

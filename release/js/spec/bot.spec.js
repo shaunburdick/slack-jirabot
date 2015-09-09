@@ -122,7 +122,9 @@ describe('Bot', function () {
                         displayName: 'Fred'
                     },
                     customfield_10000: 'Fizz',
-                    customfield_10001: 'Buzz'
+                    customfield_10001: {
+                        value: 'Buzz'
+                    }
                 }
             };
         });
@@ -133,20 +135,23 @@ describe('Bot', function () {
         it('should truncate a long description', function () {
             var bot = new Bot(config);
             var longDescription = Array(1500).join('a');
-            expect(bot.formatIssueDescription(longDescription).length).toBeLessThan(longDescription.length);
+            expect(bot.formatIssueDescription(longDescription).length)
+                .toBeLessThan(longDescription.length);
         });
         it('should replace quotes', function () {
             var bot = new Bot(config);
-            expect(bot.formatIssueDescription('{quote}foo{quote}')).toEqual('```foo```');
+            expect(bot.formatIssueDescription('{quote}foo{quote}'))
+                .toEqual('```foo```');
         });
         it('should replace code blocks', function () {
             var bot = new Bot(config);
-            expect(bot.formatIssueDescription('{code}foo{code}')).toEqual('```foo```');
+            expect(bot.formatIssueDescription('{code}foo{code}'))
+                .toEqual('```foo```');
         });
         it('should show custom fields', function () {
             // Add some custom fields
             config.jira.customFields['customfield_10000'] = 'CF1';
-            config.jira.customFields['customfield_10001'] = 'CF2';
+            config.jira.customFields['customfield_10001.value'] = 'CF2';
             var bot = new Bot(config);
             var response = bot.issueResponse(issue);
             expect(response).toMatch(/CF1/);

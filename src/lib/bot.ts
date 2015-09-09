@@ -82,8 +82,21 @@ class Bot {
     // Custom fields
     if (this.config.jira.customFields && Object.keys(this.config.jira.customFields).length) {
       for (var customField in this.config.jira.customFields) {
-        if (issue['fields'][customField]) {
-          response += `>*${this.config.jira.customFields[customField]}:* ${issue['fields'][customField]}\n`;
+        var fieldVal = null;
+        var cfSplit = customField.split('.');
+        switch (cfSplit.length) {
+          case 1:
+            fieldVal = issue['fields'][cfSplit[0]] || fieldVal;
+            break;
+          case 2:
+            try {
+              fieldVal = issue['fields'][cfSplit[0]][cfSplit[1]];
+            } catch (e) {} // Ignore error :/
+            break;
+        }
+
+        if (fieldVal) {
+          response += `>*${this.config.jira.customFields[customField]}:* ${fieldVal}\n`;
         }
       }
     }

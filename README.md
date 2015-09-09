@@ -23,7 +23,7 @@ User would like option to keep CD tray closed so he can keep pie warm.
 ## Install
 1. Clone this [repository](https://github.com/shaunburdick/slack-jirabot.git)
 2. `npm install`
-3. Copy `./release/js/config.default.js` to `./release/js/config.js` and [fill it out](#config.js)
+3. Copy `./release/js/config.default.js` to `./release/js/config.js` and [fill it out](#configjs)
 4. `npm start`
 
 ## Test

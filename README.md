@@ -23,7 +23,7 @@ User would like option to keep CD tray closed so he can keep pie warm.
 ## Install
 1. Clone this [repository](https://github.com/shaunburdick/slack-jirabot.git)
 2. `npm install`
-3. Copy `./release/js/config.default.js` to `./release/js/config.js` and fill it out
+3. Copy `./release/js/config.default.js` to `./release/js/config.js` and [fill it out](#config.js)
 4. `npm start`
 
 ## Test
@@ -33,6 +33,34 @@ User would like option to keep CD tray closed so he can keep pie warm.
 ## Build
 1. `npm install` (make sure your NODE_ENV != `production`)
 2. `./node_modules/.bin/gulp build`
+
+## config.js
+The config file should be filled out as follows:
+- jira:
+  - protocol: string, https or http
+  - host: string, the host or fqdn for JIRA (jira.yourhost.domain)
+  - port: integer, the port JIRA is on, usually 80 or 443
+  - base: string, If JIRA doesn't sit at the root, put its base directory here
+  - user: string, Username of JIRA user
+  - pass: string, Password of JIRA user
+  - apiVersion: string, API version slug, usually latest
+  - verbose: boolean, Verbose logging
+  - strictSSL: boolean, set false for self-signed certificates
+  - sprintField: string, If using greenhopper, set the custom field that holds sprint information (customfield_1xxxx)
+  - customFields:
+    - Add any custom fields you would like to display
+    - customfield_1xxxx: "Custom Title"
+    - Object custom field: Show a member of object using dot (.) notation
+    - "customfield_1xxxx.member": "Custom Title"
+
+- slack:
+  - token: string, Your slack token
+  - autoReconnect: boolean, Reconnect on disconnect
+  - autoMark: boolean, Mark messages as read
+
+- usermap:
+  - Map a JIRA username to a Slack username
+  - "jira-username": "slack-username"
 
 ## Docker
 Build an image using `docker build -t your_image:tag`
@@ -69,7 +97,6 @@ shaunburdick/slack-jirabot:latest
 
 ## Contributing
 Once you've made your great commits:
-
 1. Fork it!
 2. Create a topic branch - `git checkout -b my_branch`
 3. Push to your branch - `git push origin my_branch`

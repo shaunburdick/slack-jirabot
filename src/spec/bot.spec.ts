@@ -85,6 +85,13 @@ describe ('Bot', () => {
       expect(bot.parseTickets('Chan', 'blarty blar TEST-3 TEST-4')).toEqual(['TEST-3', 'TEST-4']);
       expect(bot.parseTickets('Chan', 'blarty blar Test-1 Test-1')).toEqual([]);
     });
+
+    it ('should handle empty message/channel', () => {
+      var bot = new Bot(config);
+
+      expect(bot.parseTickets('Chan', null)).toEqual([]);
+      expect(bot.parseTickets(null, 'Foo')).toEqual([]);
+    });
   });
 
   describe('Ticket Buffering', () => {
@@ -165,14 +172,6 @@ describe ('Bot', () => {
       expect(bot.formatIssueDescription('')).toEqual('Ticket does not contain a description');
     });
 
-    it ('should truncate a long description', () => {
-      var bot = new Bot(config);
-      var longDescription = Array(1500).join('a');
-
-      expect(bot.formatIssueDescription(longDescription).length)
-        .toBeLessThan(longDescription.length);
-    });
-
     it ('should replace quotes', () => {
       var bot = new Bot(config);
 
@@ -188,6 +187,8 @@ describe ('Bot', () => {
     });
 
     it ('should show custom fields', () => {
+      var foundCF1 = false, foundCF2 = false;
+
       // Add some custom fields
       config.jira.customFields['customfield_10000'] = 'CF1';
       config.jira.customFields['customfield_10001.value'] = 'CF2';
@@ -195,10 +196,23 @@ describe ('Bot', () => {
       var bot = new Bot(config);
       var response = bot.issueResponse(issue);
 
-      expect(response).toMatch(/CF1/);
-      expect(response).toMatch(/CF2/);
-      expect(response).toMatch(/Fizz/);
-      expect(response).toMatch(/Buzz/);
+      for (var x in response.fields) {
+        if (response.fields[x].title == config.jira.customFields['customfield_10000'] &&
+          response.fields[x].value == issue.fields['customfield_10000']
+        ) {
+          foundCF1 = true;
+          continue;
+        }
+
+        if (response.fields[x].title == config.jira.customFields['customfield_10001.value'] &&
+          response.fields[x].value == issue.fields['customfield_10001'].value
+        ) {
+          foundCF2 = true;
+          continue;
+        }
+      }
+      expect(foundCF1).toBeTruthy();
+      expect(foundCF2).toBeTruthy();
     });
   });
 });

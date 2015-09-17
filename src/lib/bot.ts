@@ -67,8 +67,8 @@ class Bot {
     };
     var created = moment(issue['fields']['created']);
     var updated = moment(issue['fields']['updated']);
-    var description = this.formatIssueDescription(issue['fields']['description']);
 
+    response.text = this.formatIssueDescription(issue['fields']['description']);
     response.fallback = issue['fields']['summary'];
     response.pretext = `Here is some information on ${issue.key}`;
     response.title = issue['fields']['summary'];
@@ -96,6 +96,23 @@ class Bot {
     response.fields.push({
       title: "Priority",
       value: issue['fields']['priority']['name'],
+      short: true
+    });
+
+    response.fields.push({
+      title: "Reporter",
+      value: (this.JIRA2Slack(issue['fields']['reporter'].name) || issue['fields']['reporter'].displayName),
+      short: true
+    });
+
+    var assignee = 'Unassigned';
+    if (issue['fields']['assignee']) {
+      assignee = (this.JIRA2Slack(issue['fields']['assignee'].name) || issue['fields']['assignee'].displayName);
+    }
+
+    response.fields.push({
+      title: "Assignee",
+      value: assignee,
       short: true
     });
 
@@ -133,25 +150,6 @@ class Bot {
         }
       }
     }
-
-    response.fields.push({
-      title: "Reporter",
-      value: (this.JIRA2Slack(issue['fields']['reporter'].name) || issue['fields']['reporter'].displayName),
-      short: false
-    });
-
-    var assignee = 'Unassigned';
-    if (issue['fields']['assignee']) {
-      assignee = (this.JIRA2Slack(issue['fields']['assignee'].name) || issue['fields']['assignee'].displayName);
-    }
-
-    response.fields.push({
-      title: "Assignee",
-      value: assignee,
-      short: false
-    });
-
-    response.text = description;
 
     return response;
   }
@@ -335,7 +333,10 @@ class Bot {
     var self = this;
     var channel = this.slack.getChannelGroupOrDMByID(message.channel);
     var user = this.slack.getUserByID(message.user);
-    var response: Attachment;
+    var response = {
+      "as_user": true,
+      "attachments": []
+    };
     var type = message.type, ts = message.ts, text = message.text;
     var channelName = (channel && channel.is_channel) ? '#' : '';
     channelName = channelName + (channel ? channel.name : 'UNKNOWN_CHANNEL');
@@ -348,7 +349,7 @@ class Bot {
         for (var x in found) {
           this.jira.findIssue(found[x], function(error: any, issue: Issue) {
             if (!error) {
-              response = self.issueResponse(issue);
+              response.attachments = [self.issueResponse(issue)];
               var result = channel.postMessage(response);
               if (result) {
                 logger.info(`@${self.slack.self.name} responded with "${response}"`);

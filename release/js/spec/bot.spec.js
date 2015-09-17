@@ -137,12 +137,6 @@ describe('Bot', function () {
             var bot = new Bot(config);
             expect(bot.formatIssueDescription('')).toEqual('Ticket does not contain a description');
         });
-        it('should truncate a long description', function () {
-            var bot = new Bot(config);
-            var longDescription = Array(1500).join('a');
-            expect(bot.formatIssueDescription(longDescription).length)
-                .toBeLessThan(longDescription.length);
-        });
         it('should replace quotes', function () {
             var bot = new Bot(config);
             expect(bot.formatIssueDescription('{quote}foo{quote}'))

@@ -166,8 +166,6 @@ class Bot {
   formatIssueDescription (description: string): string {
     if (!description) {
       description = 'Ticket does not contain a description';
-    } else if (description.length > 1000) { // Prevent giant descriptions
-      description = description.slice(0, 999) + '\n\n_~~Description Continues in Ticket~~_';
     }
 
     return description
@@ -352,7 +350,7 @@ class Bot {
               response.attachments = [self.issueResponse(issue)];
               var result = channel.postMessage(response);
               if (result) {
-                logger.info(`@${self.slack.self.name} responded with "${response}"`);
+                logger.info(`@${self.slack.self.name} responded with:`, response);
               } else {
                 logger.error('It appears we are disconnected');
               }

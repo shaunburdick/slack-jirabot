@@ -268,7 +268,7 @@ var Bot = (function () {
         if (type === 'message' && (text !== null) && (channel !== null)) {
             var found = this.parseTickets(channelName, text);
             if (found && found.length) {
-                logger.info("Detected " + found.join(',') + " from " + userName);
+                logger.info("Detected " + found.join(',') + " from " + userName + " in " + channelName);
                 for (var x in found) {
                     this.jira.findIssue(found[x], function (error, issue) {
                         if (!error) {

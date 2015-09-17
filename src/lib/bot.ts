@@ -6,6 +6,7 @@ var JiraApi = require('jira').JiraApi,
 import moment = require('moment');
 import logger = require('./logger');
 import Config = require('./ConfigInterface');
+import Attachment = require('./AttachmentInterface');
 
 interface Issue {
   key: string;
@@ -31,7 +32,7 @@ class Bot {
   /**
    * Constructor.
    *
-   * @param object config The final configuration for the bot
+   * @param {Config} config The final configuration for the bot
    */
   constructor (public config: Config) {
     this.slack = new Slack(
@@ -57,26 +58,54 @@ class Bot {
   /**
    * Build a response string about an issue.
    *
-   * @param object issue the issue object returned by JIRA
-   * @return string the string for output
+   * @param {Issue} issue the issue object returned by JIRA
+   * @return {Attachment} The response attachment.
    */
-  issueResponse (issue: Issue): string {
-    var response = '';
+  issueResponse (issue: Issue): Attachment {
+    var response: Attachment = {
+      fallback: `No summary found for ${issue.key}`
+    };
     var created = moment(issue['fields']['created']);
     var updated = moment(issue['fields']['updated']);
     var description = this.formatIssueDescription(issue['fields']['description']);
 
-    response += `Here is some information on ${issue.key}:\n`;
-    response += `>*Link*: ${this.buildIssueLink(issue.key)}\n`;
-    response += `>*Summary:* ${issue['fields']['summary']}\n`;
-    response += `>*Created:* ${created.calendar()}`;
-    response += `\t*Updated:* ${updated.calendar()}\n`;
-    response += `>*Status:* ${issue['fields']['status']['name']}`;
-    response += `\t*Priority:* ${issue['fields']['priority']['name']}\n`;
+    response.fallback = issue['fields']['summary'];
+    response.pretext = `Here is some information on ${issue.key}`;
+    response.title = issue['fields']['summary'];
+    response.title_link = this.buildIssueLink(issue.key);
+
+    response.fields = [];
+    response.fields.push({
+      title: "Created",
+      value: created.calendar(),
+      short: true
+    });
+
+    response.fields.push({
+      title: "Updated",
+      value: updated.calendar(),
+      short: true
+    });
+
+    response.fields.push({
+      title: "Status",
+      value: issue['fields']['status']['name'],
+      short: true
+    });
+
+    response.fields.push({
+      title: "Priority",
+      value: issue['fields']['priority']['name'],
+      short: true
+    });
 
     // Sprint fields
     if (this.config.jira.sprintField) {
-      response += `>*Sprint:* ${(this.parseSprint(issue['fields'][this.config.jira.sprintField]) || 'Not Assigned')}\n`;
+      response.fields.push({
+        title: "Sprint",
+        value: (this.parseSprint(issue['fields'][this.config.jira.sprintField]) || 'Not Assigned'),
+        short: false
+      });
     }
 
     // Custom fields
@@ -96,18 +125,33 @@ class Bot {
         }
 
         if (fieldVal) {
-          response += `>*${this.config.jira.customFields[customField]}:* ${fieldVal}\n`;
+          response.fields.push({
+            title: this.config.jira.customFields[customField],
+            value: fieldVal,
+            short: false
+          });
         }
       }
     }
 
-    response += `>*Reporter:* ${(this.JIRA2Slack(issue['fields']['reporter'].name) || issue['fields']['reporter'].displayName)}`;
+    response.fields.push({
+      title: "Reporter",
+      value: (this.JIRA2Slack(issue['fields']['reporter'].name) || issue['fields']['reporter'].displayName),
+      short: false
+    });
+
+    var assignee = 'Unassigned';
     if (issue['fields']['assignee']) {
-      response += `\t*Assignee:* ${(this.JIRA2Slack(issue['fields']['assignee'].name) || issue['fields']['assignee'].displayName)}\n`;
-    } else {
-      response += '\t*Assignee:* Unassigned\n';
+      assignee = (this.JIRA2Slack(issue['fields']['assignee'].name) || issue['fields']['assignee'].displayName);
     }
-    response += `* Description:*\n${description}`;
+
+    response.fields.push({
+      title: "Assignee",
+      value: assignee,
+      short: false
+    });
+
+    response.text = description;
 
     return response;
   }
@@ -200,6 +244,10 @@ class Bot {
    */
   parseTickets (channel: string, message: string): string[] {
     var retVal: string[] = [];
+    if (!channel || !message) {
+      return retVal;
+    }
+
     var uniques: { [id: string]: number } = {};
     var found: string[] = message.match(this.config.jira.regex);
     var now: number = Date.now();
@@ -287,7 +335,7 @@ class Bot {
     var self = this;
     var channel = this.slack.getChannelGroupOrDMByID(message.channel);
     var user = this.slack.getUserByID(message.user);
-    var response = '';
+    var response: Attachment;
     var type = message.type, ts = message.ts, text = message.text;
     var channelName = (channel && channel.is_channel) ? '#' : '';
     channelName = channelName + (channel ? channel.name : 'UNKNOWN_CHANNEL');
@@ -301,7 +349,7 @@ class Bot {
           this.jira.findIssue(found[x], function(error: any, issue: Issue) {
             if (!error) {
               response = self.issueResponse(issue);
-              var result = channel.send(response);
+              var result = channel.postMessage(response);
               if (result) {
                 logger.info(`@${self.slack.self.name} responded with "${response}"`);
               } else {

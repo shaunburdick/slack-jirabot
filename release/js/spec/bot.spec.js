@@ -64,6 +64,11 @@ describe('Bot', function () {
             expect(bot.parseTickets('Chan', 'blarty blar TEST-3 TEST-4')).toEqual(['TEST-3', 'TEST-4']);
             expect(bot.parseTickets('Chan', 'blarty blar Test-1 Test-1')).toEqual([]);
         });
+        it('should handle empty message/channel', function () {
+            var bot = new Bot(config);
+            expect(bot.parseTickets('Chan', null)).toEqual([]);
+            expect(bot.parseTickets(null, 'Foo')).toEqual([]);
+        });
     });
     describe('Ticket Buffering', function () {
         it('should populate the ticket buffer', function () {
@@ -149,15 +154,26 @@ describe('Bot', function () {
                 .toEqual('```foo```');
         });
         it('should show custom fields', function () {
+            var foundCF1 = false, foundCF2 = false;
             // Add some custom fields
             config.jira.customFields['customfield_10000'] = 'CF1';
             config.jira.customFields['customfield_10001.value'] = 'CF2';
             var bot = new Bot(config);
             var response = bot.issueResponse(issue);
-            expect(response).toMatch(/CF1/);
-            expect(response).toMatch(/CF2/);
-            expect(response).toMatch(/Fizz/);
-            expect(response).toMatch(/Buzz/);
+            for (var x in response.fields) {
+                if (response.fields[x].title == config.jira.customFields['customfield_10000'] &&
+                    response.fields[x].value == issue.fields['customfield_10000']) {
+                    foundCF1 = true;
+                    continue;
+                }
+                if (response.fields[x].title == config.jira.customFields['customfield_10001.value'] &&
+                    response.fields[x].value == issue.fields['customfield_10001'].value) {
+                    foundCF2 = true;
+                    continue;
+                }
+            }
+            expect(foundCF1).toBeTruthy();
+            expect(foundCF2).toBeTruthy();
         });
     });
 });

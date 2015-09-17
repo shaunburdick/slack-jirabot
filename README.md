@@ -2,23 +2,7 @@
 This slack bot will listen on any channel it's on for JIRA tickets. It will lookup the ticket and respond with some information about it.
 
 ## Example
-
-```
-Shaun Burdick [8:18 AM]
-Anyone looked at BUG-81?
-
-JIRABot BOT [8:18 AM]
-Here is some information on BUG-81:
->*Link*: https://jira.foo.com:443/jira/browse/BUG-81
->*Summary:* Sticky CD Trays
->*Created:* 5/20/2015    *Updated:* 2 Days ago
->*Status:* Open    *Priority:* Normal
->*Reporter:* Buffalo Pieman    *Assignee:* None
-*Description:*
-Submitting form causes CD tray to eject exposing pie to the elements.
-
-User would like option to keep CD tray closed so he can keep pie warm.
-```
+![Example](/doc/img/example.png)
 
 ## Install
 1. Clone this [repository](https://github.com/shaunburdick/slack-jirabot.git)

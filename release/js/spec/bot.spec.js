@@ -127,9 +127,9 @@ describe('Bot', function () {
                         displayName: 'Fred'
                     },
                     customfield_10000: 'Fizz',
-                    customfield_10001: {
-                        value: 'Buzz'
-                    }
+                    customfield_10001: [
+                        { value: 'Buzz' }
+                    ]
                 }
             };
         });
@@ -148,26 +148,58 @@ describe('Bot', function () {
                 .toEqual('```foo```');
         });
         it('should show custom fields', function () {
-            var foundCF1 = false, foundCF2 = false;
+            var tests = {
+                cf1: false,
+                cf2: false,
+                nope1: false,
+                nope2: false,
+                nope3: false
+            };
+            var expected = {
+                cf1: true,
+                cf2: true,
+                nope1: true,
+                nope2: true,
+                nope3: true
+            };
             // Add some custom fields
             config.jira.customFields['customfield_10000'] = 'CF1';
-            config.jira.customFields['customfield_10001.value'] = 'CF2';
+            config.jira.customFields['customfield_10001[0].value'] = 'CF2';
+            config.jira.customFields['customfield_10003 && exit()'] = 'Nope1';
+            config.jira.customFields['customfield_10004; exit()'] = 'Nope2';
+            config.jira.customFields['customfield_10005'] = 'Nope3';
             var bot = new Bot(config);
             var response = bot.issueResponse(issue);
             for (var x in response.fields) {
-                if (response.fields[x].title == config.jira.customFields['customfield_10000'] &&
-                    response.fields[x].value == issue.fields['customfield_10000']) {
-                    foundCF1 = true;
-                    continue;
-                }
-                if (response.fields[x].title == config.jira.customFields['customfield_10001.value'] &&
-                    response.fields[x].value == issue.fields['customfield_10001'].value) {
-                    foundCF2 = true;
-                    continue;
+                switch (response.fields[x].title) {
+                    case config.jira.customFields['customfield_10000']:
+                        if (response.fields[x].value == issue.fields['customfield_10000']) {
+                            tests.cf1 = true;
+                        }
+                        break;
+                    case config.jira.customFields['customfield_10001[0].value']:
+                        if (response.fields[x].value == issue.fields['customfield_10001'][0].value) {
+                            tests.cf2 = true;
+                        }
+                        break;
+                    case config.jira.customFields['customfield_10003 && exit()']:
+                        if (response.fields[x].value == 'Invalid characters in customfield_10003 && exit()') {
+                            tests.nope1 = true;
+                        }
+                        break;
+                    case config.jira.customFields['customfield_10004; exit()']:
+                        if (response.fields[x].value == 'Invalid characters in customfield_10004; exit()') {
+                            tests.nope2 = true;
+                        }
+                        break;
+                    case config.jira.customFields['customfield_10005']:
+                        if (response.fields[x].value == 'Unable to read customfield_10005') {
+                            tests.nope3 = true;
+                        }
+                        break;
                 }
             }
-            expect(foundCF1).toBeTruthy();
-            expect(foundCF2).toBeTruthy();
+            expect(tests).toEqual(expected);
         });
     });
 });

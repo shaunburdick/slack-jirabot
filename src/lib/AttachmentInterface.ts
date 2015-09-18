@@ -21,6 +21,7 @@ interface AttachmentInterface {
 
   "image_url"?: string;     // http://my-website.com/path/to/image.jpg
   "thumb_url"?: string;     // http://example.com/path/to/thumb.png
+  "mrkdwn_in"?: string[];     // ["pretext", "text", "fields"]
 }
 
 export = AttachmentInterface;

@@ -2,7 +2,7 @@
 This slack bot will listen on any channel it's on for JIRA tickets. It will lookup the ticket and respond with some information about it.
 
 ## Example
-![Example](/doc/img/example.png)
+![Example](https://github.com/shaunburdick/slack-jirabot/raw/master/doc/img/example.png)
 
 ## Install
 1. Clone this [repository](https://github.com/shaunburdick/slack-jirabot.git)
@@ -34,8 +34,9 @@ The config file should be filled out as follows:
   - customFields:
     - Add any custom fields you would like to display
     - customfield_1xxxx: "Custom Title"
-    - Object custom field: Show a member of object using dot (.) notation
-    - "customfield_1xxxx.member": "Custom Title"
+    - Object notation is supported
+      - "customfield_1xxxx.member": "Custom Title"
+      - "customfield_1xxxx[0].member": "Custom Title"
 
 - slack:
   - token: string, Your slack token

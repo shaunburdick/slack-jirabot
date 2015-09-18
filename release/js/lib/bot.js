@@ -30,6 +30,7 @@ var Bot = (function () {
         var created = moment(issue['fields']['created']);
         var updated = moment(issue['fields']['updated']);
         response.text = this.formatIssueDescription(issue['fields']['description']);
+        response.mrkdwn_in = ['text']; // Parse text as markdown
         response.fallback = issue['fields']['summary'];
         response.pretext = "Here is some information on " + issue.key;
         response.title = issue['fields']['summary'];
@@ -81,25 +82,24 @@ var Bot = (function () {
         if (this.config.jira.customFields && Object.keys(this.config.jira.customFields).length) {
             for (var customField in this.config.jira.customFields) {
                 var fieldVal = null;
-                var cfSplit = customField.split('.');
-                switch (cfSplit.length) {
-                    case 1:
-                        fieldVal = issue['fields'][cfSplit[0]] || fieldVal;
-                        break;
-                    case 2:
-                        try {
-                            fieldVal = issue['fields'][cfSplit[0]][cfSplit[1]];
-                        }
-                        catch (e) { } // Ignore error :/
-                        break;
+                // Do some simple guarding before eval
+                if (!/[;&\|\(\)]/.test(customField)) {
+                    try {
+                        fieldVal = eval("issue.fields." + customField);
+                    }
+                    catch (e) {
+                        fieldVal = "Error while reading " + customField;
+                    }
                 }
-                if (fieldVal) {
-                    response.fields.push({
-                        title: this.config.jira.customFields[customField],
-                        value: fieldVal,
-                        short: false
-                    });
+                else {
+                    fieldVal = "Invalid characters in " + customField;
                 }
+                fieldVal = fieldVal || "Unable to read " + customField;
+                response.fields.push({
+                    title: this.config.jira.customFields[customField],
+                    value: fieldVal,
+                    short: false
+                });
             }
         }
         return response;

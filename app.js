@@ -29,7 +29,7 @@ try {
   process.exit(1);
 }
 
-logger.info('Using the following configuration:', redact(config, ['token']));
+logger.info('Using the following configuration:', redact(config, ['token', 'pass']));
 
 bot = new Bot(config);
 bot.start();

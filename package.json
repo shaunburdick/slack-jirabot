@@ -1,12 +1,14 @@
 {
   "name": "slack-jirabot",
-  "version": "1.4.0",
+  "version": "2.0.0",
   "description": "Slackbot for interacting with JIRA",
-  "main": "release/js/app.js",
+  "main": "app.js",
   "private": true,
   "scripts": {
-    "start": "node release/js/app.js",
-    "test": "node_modules/.bin/jasmine-node release/js/spec --verbose --captureExceptions"
+    "start": "node app.js",
+    "test": "npm run unit",
+    "unit": "faucet",
+    "lint": "eslint ."
   },
   "author": "Shaun Burdick <github@shaunburdick.com>",
   "homepage": "http://github.com/shaunburdick/slack-jirabot",
@@ -15,18 +17,21 @@
     "url": "http://github.com/shaunburdick/slack-jirabot.git"
   },
   "license": "ISC",
+  "engine": {
+    "node": "^5.1.0"
+  },
   "dependencies": {
-    "jira": "git://github.com/shaunburdick/node-jira.git",
+    "botkit": "0.0.4",
+    "jira": "^0.9.2",
     "moment": "^2.10.3",
-    "slack-client": "^1.4.1",
-    "winston": "^1.0.0"
+    "redact-object": "^1.0.1",
+    "winston": "^2.1.1"
   },
   "devDependencies": {
-    "del": "^1.2.0",
-    "gulp": "^3.9.0",
-    "gulp-batch": "^1.0.5",
-    "gulp-typescript": "^2.8.3",
-    "gulp-watch": "^4.2.4",
-    "jasmine-node": "^1.14.5"
+    "babel-eslint": "^4.1.6",
+    "blue-tape": "^0.1.11",
+    "eslint": "^1.10.3",
+    "eslint-config-airbnb": "^2.1.1",
+    "faucet": "0.0.1"
   }
 }

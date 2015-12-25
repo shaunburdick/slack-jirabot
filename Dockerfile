@@ -15,8 +15,7 @@ ENV NODE_ENV=production \
     JIRA_REGEX=([A-Z]{1}[A-Z0-9]+\-[0-9]+) \
     JIRA_SPRINT_FIELD= \
     SLACK_TOKEN=xoxb-foo \
-    SLACK_AUTO_RECONNECT=true \
-    SLACK_AUTO_MARK=true
+    SLACK_AUTO_RECONNECT=true
 
 ADD . /usr/src/myapp
 

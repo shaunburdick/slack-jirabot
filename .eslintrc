@@ -1,0 +1,8 @@
+{
+  "extends": "airbnb/base",
+  "rules": {
+    "strict": 0,
+    "valid-jsdoc" : 2,
+    "no-eval": 0
+  }
+}

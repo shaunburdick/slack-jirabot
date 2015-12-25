@@ -7,7 +7,7 @@ This slack bot will listen on any channel it's on for JIRA tickets. It will look
 ## Install
 1. Clone this [repository](https://github.com/shaunburdick/slack-jirabot.git)
 2. `npm install`
-3. Copy `./release/js/config.default.js` to `./release/js/config.js` and [fill it out](#configjs)
+3. Copy `./config.default.js` to `./config.js` and [fill it out](#configjs)
 4. `npm start`
 
 ## Test
@@ -41,7 +41,6 @@ The config file should be filled out as follows:
 - slack:
   - token: string, Your slack token
   - autoReconnect: boolean, Reconnect on disconnect
-  - autoMark: boolean, Mark messages as read
 
 - usermap:
   - Map a JIRA username to a Slack username
@@ -67,7 +66,6 @@ You can set the configuration of the bot by using environment variables. _ENVIRO
 - _JIRA_SPRINT_FIELD_=, if using greenhopper, set the custom field that holds sprint information (customfield_xxxxx)
 - _SLACK_TOKEN_=xoxb-foo, Your Slack Token
 - _SLACK_AUTO_RECONNECT_=true, Reconnect on disconnect
-- _SLACK_AUTO_MARK_=true, Mark messages as read
 
 Set them using the `-e` flag while running docker:
 

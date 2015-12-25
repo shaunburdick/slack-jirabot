@@ -79,9 +79,9 @@ shaunburdick/slack-jirabot:latest
 ```
 
 ## Contributing
-Once you've made your great commits:
-1. Fork it!
-2. Create a topic branch - `git checkout -b my_branch`
-3. Push to your branch - `git push origin my_branch`
-4. Create an Issue with a link to your branch
-5. That's it!
+1. Create a new branch, please don't work in master directly.
+2. Add failing tests for the change you want to make (if appliciable). Run `npm test` to see the tests fail.
+3. Fix stuff.
+4. Run `npm test` to see if the tests pass. Repeat steps 2-4 until done.
+5. Update the documentation to reflect any changes.
+6. Push to your fork and submit a pull request.

@@ -7,7 +7,8 @@
   "scripts": {
     "start": "node app.js",
     "test": "npm run unit",
-    "unit": "faucet test/"
+    "unit": "faucet",
+    "lint": "eslint ."
   },
   "author": "Shaun Burdick <github@shaunburdick.com>",
   "homepage": "http://github.com/shaunburdick/slack-jirabot",

@@ -8,7 +8,8 @@
     "start": "node app.js",
     "test": "npm run unit",
     "unit": "faucet",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "coverage": "istanbul cover --include-all-sources tape test/*.test.js"
   },
   "author": "Shaun Burdick <github@shaunburdick.com>",
   "homepage": "http://github.com/shaunburdick/slack-jirabot",
@@ -22,6 +23,7 @@
   },
   "dependencies": {
     "botkit": "0.0.4",
+    "istanbul": "^0.4.1",
     "jira": "^0.9.2",
     "moment": "^2.10.3",
     "redact-object": "^1.0.1",

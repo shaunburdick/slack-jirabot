@@ -3,3 +3,4 @@
 .dockerignore
 Dockerfile
 npm-debug.log
+coverage/

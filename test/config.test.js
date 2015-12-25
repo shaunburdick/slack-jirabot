@@ -34,10 +34,10 @@ test('Config: parse default config as is', (assert) => {
 });
 
 test('Config: use env values over file values', (assert) => {
-  process.env.JIRA_PORT = 3333;
+  process.env.JIRA_REGEX = 'foo';
   const conf = Config.parse(rawConfig);
 
-  assert.equal(conf.jira.port, 3333);
+  assert.deepEqual(conf.jira.regex, /foo/g);
   assert.end();
 });
 

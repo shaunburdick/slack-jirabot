@@ -1,6 +1,6 @@
 {
   "name": "slack-jirabot",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Slackbot for interacting with JIRA",
   "main": "app.js",
   "private": true,
@@ -9,7 +9,9 @@
     "test": "npm run unit",
     "unit": "faucet",
     "lint": "eslint .",
-    "coverage": "istanbul cover --include-all-sources tape test/*.test.js"
+    "coverage": "istanbul cover --include-all-sources tape test/*.test.js",
+    "coveralls": "cat ./coverage/lcov.info | coveralls --verbose",
+    "travis": "npm run coverage && npm run coveralls"
   },
   "author": "Shaun Burdick <github@shaunburdick.com>",
   "homepage": "http://github.com/shaunburdick/slack-jirabot",

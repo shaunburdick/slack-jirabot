@@ -1,4 +1,6 @@
 # Slack Bot for JIRA
+[![Build Status](https://travis-ci.org/shaunburdick/slack-jirabot.svg)](https://travis-ci.org/shaunburdick/slack-jirabot) [![Coverage Status](https://coveralls.io/repos/shaunburdick/slack-jirabot/badge.svg?branch=master&service=github)](https://coveralls.io/github/shaunburdick/slack-jirabot?branch=master)
+
 This slack bot will listen on any channel it's on for JIRA tickets. It will lookup the ticket and respond with some information about it.
 
 ## Example

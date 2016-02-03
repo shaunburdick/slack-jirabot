@@ -16,10 +16,6 @@ This slack bot will listen on any channel it's on for JIRA tickets. It will look
 1. `npm install` (make sure your NODE_ENV != `production`)
 2. `npm test`
 
-## Build
-1. `npm install` (make sure your NODE_ENV != `production`)
-2. `./node_modules/.bin/gulp build`
-
 ## config.js
 The config file should be filled out as follows:
 - jira:

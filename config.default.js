@@ -11,9 +11,11 @@ const config = {
     apiVersion: 'latest',
     verbose: false,
     strictSSL: false,
-    regex: /([A-Z]{1}[A-Z0-9]+\-[0-9]+)/g,
+    regex: '([A-Z][A-Z0-9]+\-[0-9]+)',
     sprintField: '',
-    customFields: {},
+    customFields: {
+
+    },
   },
   slack: {
     token: 'xoxb-Your-Token',

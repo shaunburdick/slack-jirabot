@@ -32,6 +32,7 @@ The config file should be filled out as follows:
   - apiVersion: string, API version slug, usually latest
   - verbose: boolean, Verbose logging
   - strictSSL: boolean, set false for self-signed certificates
+  - regex: string, a string that will be used as a RegExp to match tickets, defaults to '([A-Z][A-Z0-9]+\-[0-9]+)'
   - sprintField: string, If using greenhopper, set the custom field that holds sprint information (customfield_1xxxx)
   - customFields:
     - Add any custom fields you would like to display

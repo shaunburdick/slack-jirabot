@@ -37,7 +37,7 @@ test('Config: use env values over file values', (assert) => {
   process.env.JIRA_REGEX = 'foo';
   const conf = Config.parse(rawConfig);
 
-  assert.deepEqual(conf.jira.regex, /foo/g);
+  assert.deepEqual(conf.jira.regex, 'foo');
   assert.end();
 });
 

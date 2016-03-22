@@ -9,7 +9,6 @@ const config = {
     user: 'username',
     pass: 'password',
     apiVersion: 'latest',
-    verbose: false,
     strictSSL: false,
     regex: '([A-Z][A-Z0-9]+\-[0-9]+)',
     sprintField: '',

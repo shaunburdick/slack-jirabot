@@ -10,7 +10,6 @@ ENV NODE_ENV=production \
     JIRA_USER= \
     JIRA_PASS= \
     JIRA_API_VERSION= \
-    JIRA_VERBOSE= \
     JIRA_STRICT_SSL= \
     JIRA_REGEX= \
     JIRA_SPRINT_FIELD= \

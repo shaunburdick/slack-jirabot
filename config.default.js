@@ -15,6 +15,7 @@ const config = {
     customFields: {
 
     },
+    response: 'full', // full or minimal
   },
   slack: {
     token: 'xoxb-Your-Token',

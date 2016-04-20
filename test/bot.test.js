@@ -210,3 +210,47 @@ test('Bot: show custom fields', (assert) => {
     }
   }
 });
+
+test('Bot: show minimal response', (assert) => {
+  const issue = {
+    key: 'TEST-1',
+    fields: {
+      created: '2015-05-01T00:00:00.000',
+      updated: '2015-05-01T00:01:00.000',
+      summary: 'Blarty',
+      description: 'Foo foo foo foo foo foo',
+      status: {
+        name: 'Open',
+      },
+      priority: {
+        name: 'Low',
+      },
+      reporter: {
+        name: 'bob',
+        displayName: 'Bob',
+      },
+      assignee: {
+        name: 'fred',
+        displayName: 'Fred',
+      },
+      customfield_10000: 'Fizz',
+      customfield_10001: [
+        { value: 'Buzz' },
+      ],
+    },
+  };
+
+  // Add some custom fields
+  configDist.jira.customFields.customfield_10000 = 'CF1';
+  configDist.jira.customFields['customfield_10001[0].value'] = 'CF2';
+  configDist.jira.customFields['customfield_10003 && exit()'] = 'Nope1';
+  configDist.jira.customFields['customfield_10004; exit()'] = 'Nope2';
+  configDist.jira.customFields.customfield_10005 = 'Nope3';
+  configDist.jira.response = 'minimal';
+
+  const bot = new Bot(configDist);
+  const response = bot.issueResponse(issue);
+
+  assert.equal(response.fields.length, 0, 'No fields should be provided in minimal response');
+  assert.end();
+});

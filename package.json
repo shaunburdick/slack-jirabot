@@ -1,6 +1,6 @@
 {
   "name": "slack-jirabot",
-  "version": "2.0.3",
+  "version": "2.1.0",
   "description": "Slackbot for interacting with JIRA",
   "main": "app.js",
   "private": true,

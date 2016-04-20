@@ -83,6 +83,5 @@ shaunburdick/slack-jirabot:latest
 2. Add failing tests for the change you want to make (if appliciable). Run `npm test` to see the tests fail.
 3. Fix stuff.
 4. Run `npm test` to see if the tests pass. Repeat steps 2-4 until done.
-5. Check code coverage `npm run coverage` and add test paths as needed.
-6. Update the documentation to reflect any changes.
-7. Push to your fork and submit a pull request.
+5. Update the documentation to reflect any changes.
+6. Push to your fork and submit a pull request.

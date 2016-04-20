@@ -6,12 +6,10 @@
   "private": true,
   "scripts": {
     "start": "node app.js",
-    "test": "npm run unit",
-    "unit": "faucet",
+    "test": "npm run lint && npm run unit",
+    "unit": "nyc --all tape ./test/*.test.js",
     "lint": "eslint .",
-    "coverage": "istanbul cover --include-all-sources tape test/*.test.js",
-    "coveralls": "cat ./coverage/lcov.info | coveralls",
-    "travis": "npm run coverage && npm run coveralls"
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "author": "Shaun Burdick <github@shaunburdick.com>",
   "homepage": "http://github.com/shaunburdick/slack-jirabot",
@@ -24,19 +22,24 @@
     "node": "^5.1.0"
   },
   "dependencies": {
-    "botkit": "0.0.4",
-    "istanbul": "^0.4.1",
-    "jira-client": "^2.0.2",
+    "botkit": "^0.1.1",
+    "jira-client": "^3.0.1",
     "moment": "^2.10.3",
     "redact-object": "^1.0.1",
     "winston": "^2.1.1"
   },
   "devDependencies": {
-    "babel-eslint": "^4.1.6",
-    "blue-tape": "^0.1.11",
-    "coveralls": "^2.11.6",
-    "eslint": "^1.10.3",
-    "eslint-config-airbnb": "^2.1.1",
-    "faucet": "0.0.1"
+    "babel-eslint": "^6.0.3",
+    "blue-tape": "^0.2.0",
+    "coveralls": "^2.11.9",
+    "eslint": "^2.8.0",
+    "eslint-config-airbnb": "^7.0.0",
+    "nyc": "^6.4.0",
+    "tape": "^4.5.1"
+  },
+  "nyc": {
+    "include": [
+      "lib/**/*.js"
+    ]
   }
 }

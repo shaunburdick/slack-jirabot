@@ -5,7 +5,6 @@ const redact = require('redact-object');
 const Bot = require('./lib/bot');
 const Config = require('./lib/config');
 
-let bot;
 let config;
 
 /**
@@ -31,5 +30,5 @@ try {
 
 logger.info('Using the following configuration:', redact(config, ['token', 'pass']));
 
-bot = new Bot(config);
+const bot = new Bot(config);
 bot.start();

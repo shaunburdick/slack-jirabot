@@ -254,3 +254,41 @@ test('Bot: show minimal response', (assert) => {
   assert.equal(response.fields.length, 0, 'No fields should be provided in minimal response');
   assert.end();
 });
+
+test('Bot: show minimal response', (assert) => {
+  const issue = {
+    key: 'TEST-1',
+    fields: {
+      created: '2015-05-01T00:00:00.000',
+      updated: '2015-05-01T00:01:00.000',
+      summary: 'Blarty',
+      description: 'h1. Heading\nFoo foo _foo_ foo foo foo',
+      status: {
+        name: 'Open',
+      },
+      priority: {
+        name: 'Low',
+      },
+      reporter: {
+        name: 'bob',
+        displayName: 'Bob',
+      },
+      assignee: {
+        name: 'fred',
+        displayName: 'Fred',
+      },
+      customfield_10000: 'Fizz',
+      customfield_10001: [
+        { value: 'Buzz' },
+      ],
+    },
+  };
+
+  const expectedText = '# Heading\nFoo foo *foo* foo foo foo';
+
+  const bot = new Bot(configDist);
+  const response = bot.issueResponse(issue);
+
+  assert.equal(response.text, expectedText, 'Atlassian Markup should be converted to Markdown');
+  assert.end();
+});

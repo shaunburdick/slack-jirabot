@@ -1,5 +1,5 @@
 # Slack Bot for JIRA
-[![Build Status](https://travis-ci.org/shaunburdick/slack-jirabot.svg)](https://travis-ci.org/shaunburdick/slack-jirabot) [![Coverage Status](https://coveralls.io/repos/shaunburdick/slack-jirabot/badge.svg?branch=master&service=github)](https://coveralls.io/github/shaunburdick/slack-jirabot?branch=master)
+[![Build Status](https://travis-ci.org/shaunburdick/slack-jirabot.svg)](https://travis-ci.org/shaunburdick/slack-jirabot) [![Coverage Status](https://coveralls.io/repos/shaunburdick/slack-jirabot/badge.svg?branch=master&service=github)](https://coveralls.io/github/shaunburdick/slack-jirabot?branch=master) [![Docker Pulls](https://img.shields.io/docker/pulls/shaunburdick/slack-jirabot.svg?maxAge=2592000)](https://hub.docker.com/r/shaunburdick/slack-jirabot/)
 
 This slack bot will listen on any channel it's on for JIRA tickets. It will lookup the ticket and respond with some information about it.
 
@@ -48,7 +48,7 @@ The config file should be filled out as follows:
 ## Docker
 Build an image using `docker build -t your_image:tag`
 
-Official Image [shaunburdick/slack-jirabot](https://registry.hub.docker.com/u/shaunburdick/slack-jirabot/)
+Official Image [shaunburdick/slack-jirabot](https://hub.docker.com/r/shaunburdick/slack-jirabot/)
 
 ### Configuration Environment Variables
 You can set the configuration of the bot by using environment variables. _ENVIRONMENT_VARIABLE_=Default Value

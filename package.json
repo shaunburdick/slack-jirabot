@@ -24,7 +24,6 @@
   "dependencies": {
     "botkit": "^0.1.1",
     "jira-client": "^3.0.1",
-    "jira2md": "^1.5.1",
     "moment": "^2.10.3",
     "redact-object": "^1.0.1",
     "winston": "^2.1.1"

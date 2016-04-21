@@ -262,7 +262,25 @@ test('Bot: show minimal response', (assert) => {
       created: '2015-05-01T00:00:00.000',
       updated: '2015-05-01T00:01:00.000',
       summary: 'Blarty',
-      description: 'h1. Heading\nFoo foo _foo_ foo foo foo',
+      description: 'h1. Heading\nFoo foo _foo_ foo foo foo\n' +
+        '* Bulleted List\n** Indented more\n* Indented less\n\n' +
+        '# Numbered List\n## Indented more\n# Indented less\n\n' +
+        '||heading 1||heading 2||\n' +
+        '|col A1|col B1|\n|col A2|col B2|\n\n' +
+        'Bold: *boldy*\n' +
+        'Italic: _Italicy_\n' +
+        'Monospace: {{$code}}\n' +
+        'Citations: ??citation??\n' +
+        'Subscript: ~subscript~\n' +
+        'Strikethrough: -strikethrough-\n' +
+        'Code: {code}some code{code}\n' +
+        'Quote: {quote}quoted text{quote}\n' +
+        'No Format: {noformat}pre text{noformat}\n' +
+        'Unnamed Link: [http://someurl.com]\n' +
+        'Named Link: [Someurl|http://someurl.com]\n' +
+        'Blockquote: \nbq. This is quoted\n' +
+        'Color: {color:white}This is white text{color}\n' +
+        'Panel: {panel:title=foo}Panel Contents{panel}\n',
       status: {
         name: 'Open',
       },
@@ -284,11 +302,29 @@ test('Bot: show minimal response', (assert) => {
     },
   };
 
-  const expectedText = '# Heading\nFoo foo *foo* foo foo foo';
+  const expectedText = '* Heading*\nFoo foo _foo_ foo foo foo\n' +
+    '• Bulleted List\n • Indented more\n• Indented less\n\n' +
+    '1. Numbered List\n 1. Indented more\n1. Indented less\n\n' +
+    '\n|heading 1|heading 2|\n' +
+    '| --- | --- |\n|col A1|col B1|\n|col A2|col B2|\n\n' +
+    'Bold: *boldy*\n' +
+    'Italic: _Italicy_\n' +
+    'Monospace: `$code`\n' +
+    'Citations: _-- citation_\n' +
+    'Subscript: ~~subscript~~\n' +
+    'Strikethrough: ~strikethrough~\n' +
+    'Code: ```some code```\n' +
+    'Quote: ```quoted text```\n' +
+    'No Format: ```pre text```\n' +
+    'Unnamed Link: <http://someurl.com>\n' +
+    'Named Link: <http://someurl.com|Someurl>\n' +
+    'Blockquote: \n> This is quoted\n' +
+    'Color: This is white text\n' +
+    'Panel: \n| foo |\n| --- |\n| Panel Contents |\n';
 
   const bot = new Bot(configDist);
   const response = bot.issueResponse(issue);
 
-  assert.equal(response.text, expectedText, 'Atlassian Markup should be converted to Markdown');
+  assert.equal(response.text, expectedText, 'Atlassian Markup should be converted to Slack Markup');
   assert.end();
 });

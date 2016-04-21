@@ -29,6 +29,7 @@ The config file should be filled out as follows:
   - strictSSL: boolean, set false for self-signed certificates
   - regex: string, a string that will be used as a RegExp to match tickets, defaults to '([A-Z][A-Z0-9]+\-[0-9]+)'
   - sprintField: string, If using greenhopper, set the custom field that holds sprint information (customfield_1xxxx)
+  - response: string, If 'full'(default), it will display all fields in response. 'minimal' just shows title/description
   - customFields:
     - Add any custom fields you would like to display
     - customfield_1xxxx: "Custom Title"
@@ -51,19 +52,20 @@ Official Image [shaunburdick/slack-jirabot](https://registry.hub.docker.com/u/sh
 
 ### Configuration Environment Variables
 You can set the configuration of the bot by using environment variables. _ENVIRONMENT_VARIABLE_=Default Value
-- _JIRA_PROTOCOL_=https, https or http
-- _JIRA_HOST_=jira.yourdomain.com, hostname for JIRA
-- _JIRA_PORT_=443, Usually 80 or 443
-- _JIRA_BASE_= , If JIRA doesn't sit at the root, put its base directory here
-- _JIRA_USER_=username, Username of JIRA user
-- _JIRA_PASS_=password, Password of JIRA user
-- _JIRA_API_VERSION_=latest, API version slug
-- _JIRA_VERBOSE_=false, Verbose logging
-- _JIRA_STRICT_SSL_=false, Set to false for self-signed certificates
-- _JIRA_REGEX_=([A-Z0-9]+-[0-9]+), The regex to match JIRA tickets
-- _JIRA_SPRINT_FIELD_=, if using greenhopper, set the custom field that holds sprint information (customfield_xxxxx)
-- _SLACK_TOKEN_=xoxb-foo, Your Slack Token
-- _SLACK_AUTO_RECONNECT_=true, Reconnect on disconnect
+- JIRA_PROTOCOL=https, https or http
+- JIRA_HOST=jira.yourdomain.com, hostname for JIRA
+- JIRA_PORT=443, Usually 80 or 443
+- JIRA_BASE= , If JIRA doesn't sit at the root, put its base directory here
+- JIRA_USER=username, Username of JIRA user
+- JIRA_PASS=password, Password of JIRA user
+- JIRA_API_VERSION=latest, API version slug
+- JIRA_VERBOSE=false, Verbose logging
+- JIRA_STRICT_SSL=false, Set to false for self-signed certificates
+- JIRA_REGEX=([A-Z0-9]+-[0-9]+), The regex to match JIRA tickets
+- JIRA_SPRINT_FIELD=, if using greenhopper, set the custom field that holds sprint information (customfield_xxxxx)
+- JIRA_RESPONSE=, If 'full' (default), it will display all fields in response. 'minimal' just shows title/description
+- SLACK_TOKEN=xoxb-foo, Your Slack Token
+- SLACK_AUTO_RECONNECT=true, Reconnect on disconnect
 
 Set them using the `-e` flag while running docker:
 
@@ -81,6 +83,5 @@ shaunburdick/slack-jirabot:latest
 2. Add failing tests for the change you want to make (if appliciable). Run `npm test` to see the tests fail.
 3. Fix stuff.
 4. Run `npm test` to see if the tests pass. Repeat steps 2-4 until done.
-5. Check code coverage `npm run coverage` and add test paths as needed.
-6. Update the documentation to reflect any changes.
-7. Push to your fork and submit a pull request.
+5. Update the documentation to reflect any changes.
+6. Push to your fork and submit a pull request.

@@ -1,8 +1,8 @@
 'use strict';
 
-const test = require('blue-tape');
-const Bot = require(process.env.PWD + '/lib/bot');
-const configDist = require(process.env.PWD + '/config.default.js');
+const test = require('tape');
+const Bot = require(`${process.env.PWD}/lib/bot`);
+const configDist = require(`${process.env.PWD}/config.default.js`);
 
 test('Bot: instantiate and set config', (assert) => {
   const bot = new Bot(configDist);
@@ -49,15 +49,15 @@ test('Bot: parse a sprint name from the last sprint in the greenhopper field', (
     `derpry-derp-derp,name=${sprintName}3,foo`,
   ];
 
-  assert.equal(bot.parseSprint(exampleSprint), sprintName + '3');
+  assert.equal(bot.parseSprint(exampleSprint), `${sprintName}3`);
   assert.end();
 });
 
 test('Bot: translate a jira username to a slack username', (assert) => {
   configDist.usermap = {
-    'foo': 'bar',
-    'fizz': 'buzz',
-    'ping': 'pong',
+    foo: 'bar',
+    fizz: 'buzz',
+    ping: 'pong',
   };
 
   const bot = new Bot(configDist);
@@ -90,11 +90,11 @@ test('Bot: populate the ticket buffer', (assert) => {
   const channel = 'Test';
   const hash = bot.hashTicket(channel, ticket);
 
-  assert.deepEqual(bot.parseTickets(channel, 'foo ' + ticket), [ticket]);
+  assert.deepEqual(bot.parseTickets(channel, `fooå${ticket}`), [ticket]);
   assert.ok(bot.ticketBuffer.get(hash));
 
   // Expect the ticket to not be repeated
-  assert.deepEqual(bot.parseTickets(channel, 'foo ' + ticket), []);
+  assert.deepEqual(bot.parseTickets(channel, `foo ${ticket}`), []);
   assert.end();
 });
 
@@ -104,8 +104,8 @@ test('Bot: respond to the same ticket in different channels', (assert) => {
   const channel1 = 'Test1';
   const channel2 = 'Test2';
 
-  assert.deepEqual(bot.parseTickets(channel1, 'foo ' + ticket), [ticket]);
-  assert.deepEqual(bot.parseTickets(channel2, 'foo ' + ticket), [ticket]);
+  assert.deepEqual(bot.parseTickets(channel1, `foo ${ticket}`), [ticket]);
+  assert.deepEqual(bot.parseTickets(channel2, `foo ${ticket}`), [ticket]);
   assert.end();
 });
 
@@ -115,7 +115,7 @@ test('Bot: cleanup the ticket buffer', (assert) => {
   const channel = 'Test';
   const hash = bot.hashTicket(channel, ticket);
 
-  assert.deepEqual(bot.parseTickets(channel, 'foo ' + ticket), [ticket]);
+  assert.deepEqual(bot.parseTickets(channel, `foo ${ticket}`), [ticket]);
   assert.ok(bot.ticketBuffer.get(hash));
 
   // set the Ticket Buffer Length low to trigger the cleanup
@@ -195,7 +195,8 @@ test('Bot: show custom fields', (assert) => {
           assert.equal(response.fields[x].value, issue.fields.customfield_10001[0].value);
           break;
         case configDist.jira.customFields['customfield_10003 && exit()']:
-          assert.equal(response.fields[x].value, 'Invalid characters in customfield_10003 && exit()');
+          assert.equal(response.fields[x].value,
+            'Invalid characters in customfield_10003 && exit()');
           break;
         case configDist.jira.customFields['customfield_10004; exit()']:
           assert.equal(response.fields[x].value, 'Invalid characters in customfield_10004; exit()');
@@ -208,4 +209,48 @@ test('Bot: show custom fields', (assert) => {
       }
     }
   }
+});
+
+test('Bot: show minimal response', (assert) => {
+  const issue = {
+    key: 'TEST-1',
+    fields: {
+      created: '2015-05-01T00:00:00.000',
+      updated: '2015-05-01T00:01:00.000',
+      summary: 'Blarty',
+      description: 'Foo foo foo foo foo foo',
+      status: {
+        name: 'Open',
+      },
+      priority: {
+        name: 'Low',
+      },
+      reporter: {
+        name: 'bob',
+        displayName: 'Bob',
+      },
+      assignee: {
+        name: 'fred',
+        displayName: 'Fred',
+      },
+      customfield_10000: 'Fizz',
+      customfield_10001: [
+        { value: 'Buzz' },
+      ],
+    },
+  };
+
+  // Add some custom fields
+  configDist.jira.customFields.customfield_10000 = 'CF1';
+  configDist.jira.customFields['customfield_10001[0].value'] = 'CF2';
+  configDist.jira.customFields['customfield_10003 && exit()'] = 'Nope1';
+  configDist.jira.customFields['customfield_10004; exit()'] = 'Nope2';
+  configDist.jira.customFields.customfield_10005 = 'Nope3';
+  configDist.jira.response = 'minimal';
+
+  const bot = new Bot(configDist);
+  const response = bot.issueResponse(issue);
+
+  assert.equal(response.fields.length, 0, 'No fields should be provided in minimal response');
+  assert.end();
 });

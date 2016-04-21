@@ -10,11 +10,12 @@ const config = {
     pass: 'password',
     apiVersion: 'latest',
     strictSSL: false,
-    regex: '([A-Z][A-Z0-9]+\-[0-9]+)',
+    regex: '([A-Z][A-Z0-9]+-[0-9]+)',
     sprintField: '',
     customFields: {
 
     },
+    response: 'full', // full or minimal
   },
   slack: {
     token: 'xoxb-Your-Token',

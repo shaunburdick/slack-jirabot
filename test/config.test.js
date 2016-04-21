@@ -1,8 +1,8 @@
 'use strict';
 
-const test = require('blue-tape');
-const Config = require(process.env.PWD + '/lib/config');
-const rawConfig = require(process.env.PWD + '/config.default');
+const test = require('tape');
+const Config = require(`${process.env.PWD}/lib/config`);
+const rawConfig = require(`${process.env.PWD}/config.default`);
 
 test('Config: Config: parse the string \'true\' into a boolean true', (assert) => {
   assert.equal(Config.parseBool('true'), true);

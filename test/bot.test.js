@@ -302,7 +302,7 @@ test('Bot: show minimal response', (assert) => {
     },
   };
 
-  const expectedText = '* Heading*\nFoo foo _foo_ foo foo foo\n' +
+  const expectedText = '\n* Heading*\n\nFoo foo _foo_ foo foo foo\n' +
     '• Bulleted List\n • Indented more\n• Indented less\n\n' +
     '1. Numbered List\n 1. Indented more\n1. Indented less\n\n' +
     '\n|heading 1|heading 2|\n' +

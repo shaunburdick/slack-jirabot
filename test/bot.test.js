@@ -264,7 +264,13 @@ test('Bot: show minimal response', (assert) => {
       summary: 'Blarty',
       description: 'h1. Heading\nFoo foo _foo_ foo foo foo\n' +
         '* Bulleted List\n** Indented more\n* Indented less\n\n' +
-        '# Numbered List\n## Indented more\n# Indented less\n\n' +
+        '# Numbered List\n' +
+        '## Indented more\n' +
+        '## Indented more\n' +
+        '### Indented morer\n' +
+        '### Indented morer\n' +
+        '### Indented morer\n' +
+        '# Indented less\n\n' +
         '||heading 1||heading 2||\n' +
         '|col A1|col B1|\n|col A2|col B2|\n\n' +
         'Bold: *boldy*\n' +
@@ -304,7 +310,13 @@ test('Bot: show minimal response', (assert) => {
 
   const expectedText = '\n* Heading*\n\nFoo foo _foo_ foo foo foo\n' +
     '• Bulleted List\n • Indented more\n• Indented less\n\n' +
-    '1. Numbered List\n 1. Indented more\n1. Indented less\n\n' +
+    '1. Numbered List\n' +
+    ' 1. Indented more\n' +
+    ' 2. Indented more\n' +
+    '  1. Indented morer\n' +
+    '  2. Indented morer\n' +
+    '  3. Indented morer\n' +
+    '2. Indented less\n\n' +
     '\n|heading 1|heading 2|\n' +
     '| --- | --- |\n|col A1|col B1|\n|col A2|col B2|\n\n' +
     'Bold: *boldy*\n' +

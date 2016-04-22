@@ -270,6 +270,7 @@ test('Bot: show minimal response', (assert) => {
         '### Indented morer\n' +
         '### Indented morer\n' +
         '### Indented morer\n' +
+        '## Indented more\n' +
         '# Indented less\n\n' +
         '||heading 1||heading 2||\n' +
         '|col A1|col B1|\n|col A2|col B2|\n\n' +
@@ -316,6 +317,7 @@ test('Bot: show minimal response', (assert) => {
     '    1. Indented morer\n' +
     '    2. Indented morer\n' +
     '    3. Indented morer\n' +
+    '  3. Indented more\n' +
     '2. Indented less\n\n' +
     '\n|heading 1|heading 2|\n' +
     '| --- | --- |\n|col A1|col B1|\n|col A2|col B2|\n\n' +

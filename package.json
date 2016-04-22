@@ -1,6 +1,6 @@
 {
   "name": "slack-jirabot",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Slackbot for interacting with JIRA",
   "main": "app.js",
   "private": true,
@@ -23,14 +23,13 @@
   },
   "dependencies": {
     "botkit": "^0.1.1",
-    "jira-client": "^3.0.1",
+    "jira-client": "^3.0.2",
     "moment": "^2.10.3",
     "redact-object": "^1.0.1",
     "winston": "^2.1.1"
   },
   "devDependencies": {
     "babel-eslint": "^6.0.3",
-    "blue-tape": "^0.2.0",
     "coveralls": "^2.11.9",
     "eslint": "^2.8.0",
     "eslint-config-airbnb": "^7.0.0",

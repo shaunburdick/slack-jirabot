@@ -254,3 +254,99 @@ test('Bot: show minimal response', (assert) => {
   assert.equal(response.fields.length, 0, 'No fields should be provided in minimal response');
   assert.end();
 });
+
+test('Bot: show minimal response', (assert) => {
+  const issue = {
+    key: 'TEST-1',
+    fields: {
+      created: '2015-05-01T00:00:00.000',
+      updated: '2015-05-01T00:01:00.000',
+      summary: 'Blarty',
+      description: 'h1. Heading\nFoo foo _foo_ foo foo foo\n' +
+        '* Bulleted List\n** Indented more\n* Indented less\n\n' +
+        '# Numbered List\n' +
+        '## Indented more\n' +
+        '## Indented more\n' +
+        '### Indented morer\n' +
+        '### Indented morer\n' +
+        '### Indented morer\n' +
+        '## Indented more\n' +
+        '# Indented less\n\n' +
+        '||heading 1||heading 2||\n' +
+        '|col A1|col B1|\n|col A2|col B2|\n\n' +
+        'Bold: *boldy*\n' +
+        'Bold (spaced): * boldy is spaced *\n' +
+        'Italic: _italicy_\n' +
+        'Italic (spaced): _italicy is poorly spaced _\n' +
+        'Monospace: {{$code}}\n' +
+        'Citations: ??citation??\n' +
+        'Subscript: ~subscript~\n' +
+        'Superscript: ^superscript^\n' +
+        'Strikethrough: -strikethrough-\n' +
+        'Strikethrough (spaced): - strikethrough is poorly spaced-\n' +
+        'Code: {code}some code{code}\n' +
+        'Quote: {quote}quoted text{quote}\n' +
+        'No Format: {noformat}pre text{noformat}\n' +
+        'Unnamed Link: [http://someurl.com]\n' +
+        'Named Link: [Someurl|http://someurl.com]\n' +
+        'Blockquote: \nbq. This is quoted\n' +
+        'Color: {color:white}This is white text{color}\n' +
+        'Panel: {panel:title=foo}Panel Contents{panel}\n',
+      status: {
+        name: 'Open',
+      },
+      priority: {
+        name: 'Low',
+      },
+      reporter: {
+        name: 'bob',
+        displayName: 'Bob',
+      },
+      assignee: {
+        name: 'fred',
+        displayName: 'Fred',
+      },
+      customfield_10000: 'Fizz',
+      customfield_10001: [
+        { value: 'Buzz' },
+      ],
+    },
+  };
+
+  const expectedText = '\n *Heading*\n\nFoo foo _foo_ foo foo foo\n' +
+    '• Bulleted List\n  • Indented more\n• Indented less\n\n' +
+    '1. Numbered List\n' +
+    '  1. Indented more\n' +
+    '  2. Indented more\n' +
+    '    1. Indented morer\n' +
+    '    2. Indented morer\n' +
+    '    3. Indented morer\n' +
+    '  3. Indented more\n' +
+    '2. Indented less\n\n' +
+    '\n|heading 1|heading 2|\n' +
+    '| --- | --- |\n|col A1|col B1|\n|col A2|col B2|\n\n' +
+    'Bold: *boldy*\n' +
+    'Bold (spaced):  *boldy is spaced* \n' +
+    'Italic: _italicy_\n' +
+    'Italic (spaced): _italicy is poorly spaced_ \n' +
+    'Monospace: `$code`\n' +
+    'Citations: _-- citation_\n' +
+    'Subscript: _subscript\n' +
+    'Superscript: ^superscript\n' +
+    'Strikethrough: ~strikethrough~\n' +
+    'Strikethrough (spaced):  ~strikethrough is poorly spaced~\n' +
+    'Code: ```some code```\n' +
+    'Quote: ```quoted text```\n' +
+    'No Format: ```pre text```\n' +
+    'Unnamed Link: <http://someurl.com>\n' +
+    'Named Link: <http://someurl.com|Someurl>\n' +
+    'Blockquote: \n> This is quoted\n' +
+    'Color: This is white text\n' +
+    'Panel: \n| foo |\n| --- |\n| Panel Contents |\n';
+
+  const bot = new Bot(configDist);
+  const response = bot.issueResponse(issue);
+
+  assert.equal(response.text, expectedText, 'Atlassian Markup should be converted to Slack Markup');
+  assert.end();
+});

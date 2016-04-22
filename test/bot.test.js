@@ -275,12 +275,15 @@ test('Bot: show minimal response', (assert) => {
         '||heading 1||heading 2||\n' +
         '|col A1|col B1|\n|col A2|col B2|\n\n' +
         'Bold: *boldy*\n' +
-        'Italic: _Italicy_\n' +
+        'Bold (spaced): * boldy is spaced *\n' +
+        'Italic: _italicy_\n' +
+        'Italic (spaced): _italicy is poorly spaced _\n' +
         'Monospace: {{$code}}\n' +
         'Citations: ??citation??\n' +
         'Subscript: ~subscript~\n' +
         'Superscript: ^superscript^\n' +
         'Strikethrough: -strikethrough-\n' +
+        'Strikethrough (spaced): - strikethrough is poorly spaced-\n' +
         'Code: {code}some code{code}\n' +
         'Quote: {quote}quoted text{quote}\n' +
         'No Format: {noformat}pre text{noformat}\n' +
@@ -310,7 +313,7 @@ test('Bot: show minimal response', (assert) => {
     },
   };
 
-  const expectedText = '\n* Heading*\n\nFoo foo _foo_ foo foo foo\n' +
+  const expectedText = '\n *Heading*\n\nFoo foo _foo_ foo foo foo\n' +
     '• Bulleted List\n  • Indented more\n• Indented less\n\n' +
     '1. Numbered List\n' +
     '  1. Indented more\n' +
@@ -323,12 +326,15 @@ test('Bot: show minimal response', (assert) => {
     '\n|heading 1|heading 2|\n' +
     '| --- | --- |\n|col A1|col B1|\n|col A2|col B2|\n\n' +
     'Bold: *boldy*\n' +
-    'Italic: _Italicy_\n' +
+    'Bold (spaced):  *boldy is spaced* \n' +
+    'Italic: _italicy_\n' +
+    'Italic (spaced): _italicy is poorly spaced_ \n' +
     'Monospace: `$code`\n' +
     'Citations: _-- citation_\n' +
     'Subscript: _subscript\n' +
     'Superscript: ^superscript\n' +
     'Strikethrough: ~strikethrough~\n' +
+    'Strikethrough (spaced):  ~strikethrough is poorly spaced~\n' +
     'Code: ```some code```\n' +
     'Quote: ```quoted text```\n' +
     'No Format: ```pre text```\n' +

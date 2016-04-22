@@ -279,6 +279,7 @@ test('Bot: show minimal response', (assert) => {
         'Monospace: {{$code}}\n' +
         'Citations: ??citation??\n' +
         'Subscript: ~subscript~\n' +
+        'Superscript: ^superscript^\n' +
         'Strikethrough: -strikethrough-\n' +
         'Code: {code}some code{code}\n' +
         'Quote: {quote}quoted text{quote}\n' +
@@ -325,7 +326,8 @@ test('Bot: show minimal response', (assert) => {
     'Italic: _Italicy_\n' +
     'Monospace: `$code`\n' +
     'Citations: _-- citation_\n' +
-    'Subscript: ~~subscript~~\n' +
+    'Subscript: _subscript\n' +
+    'Superscript: ^superscript\n' +
     'Strikethrough: ~strikethrough~\n' +
     'Code: ```some code```\n' +
     'Quote: ```quoted text```\n' +

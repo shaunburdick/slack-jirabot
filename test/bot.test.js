@@ -184,31 +184,30 @@ test('Bot: show custom fields', (assert) => {
   const bot = new Bot(configDist);
   const response = bot.issueResponse(issue);
 
-  let x;
-  for (x in response.fields) {
-    if (response.fields.hasOwnProperty(x)) {
-      switch (response.fields[x].title) {
-        case configDist.jira.customFields.customfield_10000:
-          assert.equal(response.fields[x].value, issue.fields.customfield_10000);
-          break;
-        case configDist.jira.customFields['customfield_10001[0].value']:
-          assert.equal(response.fields[x].value, issue.fields.customfield_10001[0].value);
-          break;
-        case configDist.jira.customFields['customfield_10003 && exit()']:
-          assert.equal(response.fields[x].value,
-            'Invalid characters in customfield_10003 && exit()');
-          break;
-        case configDist.jira.customFields['customfield_10004; exit()']:
-          assert.equal(response.fields[x].value, 'Invalid characters in customfield_10004; exit()');
-          break;
-        case configDist.jira.customFields.customfield_10005:
-          assert.equal(response.fields[x].value, 'Unable to read customfield_10005');
-          break;
-        default:
-          // nothing to see here
-      }
+  Object.keys(response.fields).map((key) => {
+    switch (response.fields[key].title) {
+      case configDist.jira.customFields.customfield_10000:
+        assert.equal(response.fields[key].value, issue.fields.customfield_10000);
+        break;
+      case configDist.jira.customFields['customfield_10001[0].value']:
+        assert.equal(response.fields[key].value, issue.fields.customfield_10001[0].value);
+        break;
+      case configDist.jira.customFields['customfield_10003 && exit()']:
+        assert.equal(response.fields[key].value,
+          'Invalid characters in customfield_10003 && exit()');
+        break;
+      case configDist.jira.customFields['customfield_10004; exit()']:
+        assert.equal(response.fields[key].value, 'Invalid characters in customfield_10004; exit()');
+        break;
+      case configDist.jira.customFields.customfield_10005:
+        assert.equal(response.fields[key].value, 'Unable to read customfield_10005');
+        break;
+      default:
+        // nothing to see here
     }
-  }
+
+    return null;
+  });
 });
 
 test('Bot: show minimal response', (assert) => {

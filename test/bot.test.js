@@ -264,6 +264,7 @@ test('Bot: show minimal response', (assert) => {
       summary: 'Blarty',
       description: 'h1. Heading\nFoo foo _foo_ foo foo foo\n' +
         '* Bulleted List\n** Indented more\n* Indented less\n\n' +
+        '- Bulleted Dash List\n- Bulleted Dash List\n- Bulleted Dash List\n\n' +
         '# Numbered List\n' +
         '## Indented more\n' +
         '## Indented more\n' +
@@ -283,6 +284,7 @@ test('Bot: show minimal response', (assert) => {
         'Subscript: ~subscript~\n' +
         'Superscript: ^superscript^\n' +
         'Strikethrough: -strikethrough-\n' +
+        'Not Strikethrough: i-use-dashes\n' +
         'Strikethrough (spaced): - strikethrough is poorly spaced-\n' +
         'Code: {code}some code{code}\n' +
         'Quote: {quote}quoted text{quote}\n' +
@@ -315,6 +317,7 @@ test('Bot: show minimal response', (assert) => {
 
   const expectedText = '\n *Heading*\n\nFoo foo _foo_ foo foo foo\n' +
     '• Bulleted List\n  • Indented more\n• Indented less\n\n' +
+    '• Bulleted Dash List\n• Bulleted Dash List\n• Bulleted Dash List\n\n' +
     '1. Numbered List\n' +
     '  1. Indented more\n' +
     '  2. Indented more\n' +
@@ -334,6 +337,7 @@ test('Bot: show minimal response', (assert) => {
     'Subscript: _subscript\n' +
     'Superscript: ^superscript\n' +
     'Strikethrough: ~strikethrough~\n' +
+    'Not Strikethrough: i-use-dashes\n' +
     'Strikethrough (spaced):  ~strikethrough is poorly spaced~\n' +
     'Code: ```some code```\n' +
     'Quote: ```quoted text```\n' +

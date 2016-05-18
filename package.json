@@ -8,7 +8,7 @@
     "start": "node app.js",
     "test": "npm run lint && npm run unit",
     "unit": "nyc --all tape ./test/*.test.js | faucet && nyc report",
-    "lint": "eslint .",
+    "lint": "semistandard --verbose | snazzy",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "author": "Shaun Burdick <github@shaunburdick.com>",
@@ -29,14 +29,17 @@
     "winston": "^2.1.1"
   },
   "devDependencies": {
-    "babel-eslint": "^6.0.3",
     "coveralls": "^2.11.9",
-    "eslint": "^2.8.0",
-    "eslint-config-airbnb-base": "^3.0.1",
-    "eslint-plugin-import": "^1.8.0",
     "faucet": "0.0.1",
     "nyc": "^6.4.0",
+    "semistandard": "^8.0.0",
+    "snazzy": "^4.0.0",
     "tape": "^4.5.1"
+  },
+  "semistandard": {
+    "ignore": [
+      "coverage"
+    ]
   },
   "nyc": {
     "include": [

@@ -15,12 +15,12 @@ const config = {
     customFields: {
 
     },
-    response: 'full', // full or minimal
+    response: 'full' // full or minimal
   },
   slack: {
     token: 'xoxb-Your-Token',
-    autoReconnect: true,
+    autoReconnect: true
   },
-  usermap: {},
+  usermap: {}
 };
 module.exports = config;

@@ -32,7 +32,7 @@ test('Bot: parse a sprint name from greenhopper field', (assert) => {
   const bot = new Bot(configDist);
   const sprintName = 'TEST';
   const exampleSprint = [
-    `derpry-derp-derp,name=${sprintName},foo`,
+    `derpry-derp-derp,name=${sprintName},foo`
   ];
 
   assert.equal(bot.parseSprint(exampleSprint), sprintName);
@@ -46,7 +46,7 @@ test('Bot: parse a sprint name from the last sprint in the greenhopper field', (
   const exampleSprint = [
     `derpry-derp-derp,name=${sprintName}1,foo`,
     `derpry-derp-derp,name=${sprintName}2,foo`,
-    `derpry-derp-derp,name=${sprintName}3,foo`,
+    `derpry-derp-derp,name=${sprintName}3,foo`
   ];
 
   assert.equal(bot.parseSprint(exampleSprint), `${sprintName}3`);
@@ -57,7 +57,7 @@ test('Bot: translate a jira username to a slack username', (assert) => {
   configDist.usermap = {
     foo: 'bar',
     fizz: 'buzz',
-    ping: 'pong',
+    ping: 'pong'
   };
 
   const bot = new Bot(configDist);
@@ -154,24 +154,24 @@ test('Bot: show custom fields', (assert) => {
       summary: 'Blarty',
       description: 'Foo foo foo foo foo foo',
       status: {
-        name: 'Open',
+        name: 'Open'
       },
       priority: {
-        name: 'Low',
+        name: 'Low'
       },
       reporter: {
         name: 'bob',
-        displayName: 'Bob',
+        displayName: 'Bob'
       },
       assignee: {
         name: 'fred',
-        displayName: 'Fred',
+        displayName: 'Fred'
       },
       customfield_10000: 'Fizz',
       customfield_10001: [
-        { value: 'Buzz' },
-      ],
-    },
+        { value: 'Buzz' }
+      ]
+    }
   };
 
   // Add some custom fields
@@ -219,24 +219,24 @@ test('Bot: show minimal response', (assert) => {
       summary: 'Blarty',
       description: 'Foo foo foo foo foo foo',
       status: {
-        name: 'Open',
+        name: 'Open'
       },
       priority: {
-        name: 'Low',
+        name: 'Low'
       },
       reporter: {
         name: 'bob',
-        displayName: 'Bob',
+        displayName: 'Bob'
       },
       assignee: {
         name: 'fred',
-        displayName: 'Fred',
+        displayName: 'Fred'
       },
       customfield_10000: 'Fizz',
       customfield_10001: [
-        { value: 'Buzz' },
-      ],
-    },
+        { value: 'Buzz' }
+      ]
+    }
   };
 
   // Add some custom fields
@@ -294,24 +294,24 @@ test('Bot: Check formatting', (assert) => {
         'Color: {color:white}This is white text{color}\n' +
         'Panel: {panel:title=foo}Panel Contents{panel}\n',
       status: {
-        name: 'Open',
+        name: 'Open'
       },
       priority: {
-        name: 'Low',
+        name: 'Low'
       },
       reporter: {
         name: 'bob',
-        displayName: 'Bob',
+        displayName: 'Bob'
       },
       assignee: {
         name: 'fred',
-        displayName: 'Fred',
+        displayName: 'Fred'
       },
       customfield_10000: 'Fizz',
       customfield_10001: [
-        { value: 'Buzz' },
-      ],
-    },
+        { value: 'Buzz' }
+      ]
+    }
   };
 
   const expectedText = '\n *Heading*\n\nFoo foo _foo_ foo foo foo\n' +

@@ -254,7 +254,7 @@ test('Bot: show minimal response', (assert) => {
   assert.end();
 });
 
-test('Bot: show minimal response', (assert) => {
+test('Bot: Check formatting', (assert) => {
   const issue = {
     key: 'TEST-1',
     fields: {

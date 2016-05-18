@@ -1,5 +1,5 @@
 # Slack Bot for JIRA
-[![Build Status](https://travis-ci.org/shaunburdick/slack-jirabot.svg)](https://travis-ci.org/shaunburdick/slack-jirabot) [![Coverage Status](https://coveralls.io/repos/shaunburdick/slack-jirabot/badge.svg?branch=master&service=github)](https://coveralls.io/github/shaunburdick/slack-jirabot?branch=master) [![Docker Pulls](https://img.shields.io/docker/pulls/shaunburdick/slack-jirabot.svg?maxAge=2592000)](https://hub.docker.com/r/shaunburdick/slack-jirabot/)
+[![Build Status](https://travis-ci.org/shaunburdick/slack-jirabot.svg)](https://travis-ci.org/shaunburdick/slack-jirabot) [![Coverage Status](https://coveralls.io/repos/shaunburdick/slack-jirabot/badge.svg?branch=master&service=github)](https://coveralls.io/github/shaunburdick/slack-jirabot?branch=master) [![Docker Pulls](https://img.shields.io/docker/pulls/shaunburdick/slack-jirabot.svg?maxAge=2592000)](https://hub.docker.com/r/shaunburdick/slack-jirabot/) [![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg)](https://github.com/Flet/semistandard)
 
 This slack bot will listen on any channel it's on for JIRA tickets. It will lookup the ticket and respond with some information about it.
 

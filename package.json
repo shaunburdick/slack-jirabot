@@ -1,6 +1,6 @@
 {
   "name": "slack-jirabot",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "description": "Slackbot for interacting with JIRA",
   "main": "app.js",
   "private": true,
@@ -22,9 +22,9 @@
     "node": "^4.0.0"
   },
   "dependencies": {
-    "botkit": "^0.1.1",
+    "botkit": "^0.2.0",
     "jira-client": "^3.0.2",
-    "jira2slack": "^0.1.0",
+    "jira2slack": "^1.0.0",
     "moment": "^2.10.3",
     "redact-object": "^1.0.1",
     "winston": "^2.1.1"

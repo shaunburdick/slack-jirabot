@@ -22,7 +22,7 @@
     "node": "^4.0.0"
   },
   "dependencies": {
-    "botkit": "^0.2.0",
+    "botkit": "^0.4.10",
     "jira-client": "^3.0.2",
     "jira2slack": "^1.0.0",
     "moment": "^2.10.3",
